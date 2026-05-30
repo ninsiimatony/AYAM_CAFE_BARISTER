@@ -18,7 +18,7 @@ export default async function DashboardLayout({
 
   return (
     <AuthProvider>
-      <div className="flex h-screen flex-col overflow-hidden bg-cream-100">
+      <div className="flex h-screen flex-col overflow-hidden bg-cream-100 dark:bg-coffee-950">
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           {/* Sidebar — hidden on mobile */}

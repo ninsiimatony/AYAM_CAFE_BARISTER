@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import RoleBadge from './RoleBadge'
+import ThemeToggle from './dashboard/ThemeToggle'
 
 export default function Navbar() {
   const { user, profile, role, signOut } = useAuth()
@@ -21,7 +22,7 @@ export default function Navbar() {
     : user?.email?.[0]?.toUpperCase() ?? '?'
 
   return (
-    <header className="sticky top-0 z-40 border-b border-coffee-100 bg-white/95 backdrop-blur-sm shadow-sm">
+    <header className="sticky top-0 z-40 border-b border-coffee-100 dark:border-coffee-800 bg-white/95 dark:bg-coffee-900/95 backdrop-blur-sm shadow-sm">
       <div className="flex h-16 items-center justify-between px-4 lg:px-6">
         {/* Logo */}
         <Link href="/dashboard" className="flex items-center gap-2.5 group">
@@ -43,6 +44,7 @@ export default function Navbar() {
 
         {/* Right section */}
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           {role && <RoleBadge role={role} size="sm" />}
 
           {/* User menu */}

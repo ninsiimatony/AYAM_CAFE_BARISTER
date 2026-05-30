@@ -25,12 +25,55 @@ const navItems: NavItem[] = [
     ),
   },
   {
+    href: '/dashboard/sales',
+    label: 'Sales',
+    description: 'Revenue & analytics',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+      </svg>
+    ),
+  },
+  {
     href: '/dashboard/orders',
     label: 'Orders',
     description: 'Manage orders',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/dashboard/customers',
+    label: 'Customers',
+    description: 'Customer management',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 14.094A5.973 5.973 0 004 17v1H1v-1a3 3 0 013.75-2.906z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/dashboard/inventory',
+    label: 'Inventory',
+    description: 'Stock management',
+    requiredRole: 'staff',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z" />
+        <path fillRule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clipRule="evenodd" />
+      </svg>
+    ),
+  },
+  {
+    href: '/dashboard/employees',
+    label: 'Employees',
+    description: 'Team & shifts',
+    requiredRole: 'staff',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
       </svg>
     ),
   },
@@ -100,7 +143,7 @@ export default function Sidebar() {
   })
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-coffee-100 bg-white">
+    <aside className="flex h-full w-64 flex-col border-r border-coffee-100 dark:border-coffee-800 bg-white dark:bg-coffee-900">
       <nav className="flex-1 overflow-y-auto p-4 space-y-1">
         {visibleItems.map((item) => {
           const isActive =
@@ -116,7 +159,7 @@ export default function Sidebar() {
                 group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200
                 ${isActive
                   ? 'bg-coffee-gradient text-white shadow-coffee'
-                  : 'text-coffee-600 hover:bg-coffee-50 hover:text-coffee-800'
+                  : 'text-coffee-600 dark:text-coffee-400 hover:bg-coffee-50 dark:hover:bg-coffee-800 hover:text-coffee-800 dark:hover:text-cream-100'
                 }
               `}
             >
