@@ -153,3 +153,82 @@ export interface AIConfig {
   updated_at: string
   updated_by: string | null
 }
+
+// ─── POS System ───────────────────────────────────────────────────────────────
+
+export interface POSCategory {
+  id: string
+  name: string
+  color: string
+  icon: string
+  display_order: number
+  created_at: string
+}
+
+export interface POSProduct {
+  id: string
+  name: string
+  description: string | null
+  category_id: string | null
+  price: number
+  image_url: string | null
+  is_available: boolean
+  stock_count: number | null
+  created_at: string
+  updated_at: string
+  pos_categories?: POSCategory | null
+}
+
+export interface POSTable {
+  id: string
+  table_number: number
+  capacity: number
+  status: 'available' | 'occupied' | 'reserved' | 'cleaning'
+  location: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface POSCartItem {
+  product_id: string
+  name: string
+  price: number
+  quantity: number
+  notes?: string
+}
+
+export type POSPaymentMethod = 'cash' | 'card' | 'mobile_money' | 'complimentary'
+export type POSTransactionStatus = 'pending' | 'completed' | 'voided' | 'refunded'
+
+export interface POSTransaction {
+  id: string
+  transaction_number: string
+  table_id: string | null
+  cashier_id: string | null
+  items: POSCartItem[]
+  subtotal: number
+  tax_rate: number
+  tax_amount: number
+  discount_amount: number
+  total: number
+  payment_method: POSPaymentMethod
+  amount_paid: number | null
+  change_amount: number | null
+  status: POSTransactionStatus
+  notes: string | null
+  created_at: string
+  updated_at: string
+  pos_tables?: Pick<POSTable, 'table_number' | 'location'> | null
+  profiles?: Pick<Profile, 'full_name' | 'email'> | null
+}
+
+export interface POSReport {
+  date: string
+  transaction_count: number
+  total_revenue: number
+  subtotal: number
+  tax_collected: number
+  discounts_given: number
+  by_payment_method: Record<string, { count: number; total: number }>
+  top_items: { name: string; quantity: number; revenue: number }[]
+}
