@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fdf6ed;
+    --foreground: #2c1a0e;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream-100 text-coffee-900 antialiased;
+  }
+
+  * {
+    @apply border-coffee-100;
+  }
+
+  ::selection {
+    @apply bg-coffee-200 text-coffee-900;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-coffee-50;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-coffee-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-coffee-400;
+  }
+}
+
+@layer components {
+  .auth-card {
+    @apply bg-white rounded-3xl shadow-coffee-lg border border-coffee-100/60 p-8 sm:p-10 w-full max-w-md mx-auto;
+  }
+
+  .coffee-divider {
+    @apply relative flex items-center gap-3 py-2;
+  }
+
+  .coffee-divider::before,
+  .coffee-divider::after {
+    content: '';
+    @apply flex-1 border-t border-coffee-200;
+  }
+
+  .dashboard-card {
+    @apply bg-white rounded-2xl border border-coffee-100 shadow-sm p-6 hover:shadow-coffee transition-shadow duration-200;
+  }
+
+  .stat-card {
+    @apply dashboard-card flex flex-col gap-2;
+  }
+}
