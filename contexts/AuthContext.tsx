@@ -5,6 +5,27 @@ import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile, UserRole } from '@/lib/types'
 
+const DEMO_USER = {
+  id: 'demo-user-id',
+  email: 'demo@ayamcafe.com',
+  email_confirmed_at: new Date().toISOString(),
+} as unknown as User
+
+const DEMO_PROFILE: Profile = {
+  id: 'demo-user-id',
+  email: 'demo@ayamcafe.com',
+  full_name: 'Demo Admin',
+  avatar_url: null,
+  role: 'admin' as UserRole,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+}
+
+const isSupabaseConfigured =
+  typeof process.env.NEXT_PUBLIC_SUPABASE_URL === 'string' &&
+  process.env.NEXT_PUBLIC_SUPABASE_URL.length > 0 &&
+  process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co'
+
 interface AuthContextType {
   user: User | null
   profile: Profile | null
@@ -24,9 +45,9 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(isSupabaseConfigured ? null : DEMO_USER)
+  const [profile, setProfile] = useState<Profile | null>(isSupabaseConfigured ? null : DEMO_PROFILE)
+  const [loading, setLoading] = useState(isSupabaseConfigured)
 
   const supabase = createClient()
 
@@ -44,12 +65,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase])
 
   const refreshProfile = useCallback(async () => {
-    if (user) {
+    if (user && isSupabaseConfigured) {
       await fetchProfile(user.id)
     }
   }, [user, fetchProfile])
 
   useEffect(() => {
+    if (!isSupabaseConfigured) return
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       if (user) {
@@ -76,9 +99,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [fetchProfile, supabase.auth])
 
   const signOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    setProfile(null)
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut()
+    }
+    setUser(isSupabaseConfigured ? null : DEMO_USER)
+    setProfile(isSupabaseConfigured ? null : DEMO_PROFILE)
   }
 
   return (

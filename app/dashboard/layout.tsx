@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Navbar from '@/components/Navbar'
@@ -11,11 +10,13 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
+  // Auth check only when Supabase is configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+  if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co') {
+    const { redirect } = await import('next/navigation')
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) redirect('/login')
   }
 
   return (
@@ -23,11 +24,9 @@ export default async function DashboardLayout({
       <div className="flex h-screen flex-col overflow-hidden bg-cream-100 dark:bg-coffee-950">
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar — hidden on mobile */}
           <div className="hidden md:flex flex-shrink-0">
             <Sidebar />
           </div>
-          {/* Main content */}
           <main className="flex-1 overflow-y-auto p-4 lg:p-6">
             {children}
           </main>
