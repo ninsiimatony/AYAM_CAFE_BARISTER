@@ -94,11 +94,22 @@ export async function POST(req: NextRequest) {
         if (!('function' in toolCall)) continue
         const fnToolCall = toolCall as { id: string; function: { name: string; arguments: string } }
         const fnName = fnToolCall.function.name
-        const fnArgs = JSON.parse(fnToolCall.function.arguments) as Record<string, unknown>
+        let fnArgs: Record<string, unknown>
+        try {
+          fnArgs = JSON.parse(fnToolCall.function.arguments) as Record<string, unknown>
+        } catch {
+          toolResults.push({ role: 'tool', tool_call_id: fnToolCall.id, content: JSON.stringify({ error: 'Invalid arguments' }) })
+          continue
+        }
         let result: string
 
         if (fnName === 'take_order') {
           const args = fnArgs as unknown as TakeOrderArgs
+          if (!Array.isArray(args.items) || args.items.length === 0 || typeof args.total !== 'number' || args.total <= 0 || args.total > 50_000_000) {
+            result = JSON.stringify({ success: false, error: 'Invalid order data' })
+            toolResults.push({ role: 'tool', tool_call_id: fnToolCall.id, content: result })
+            continue
+          }
           const items: OrderItemLine[] = args.items.map((i) => ({
             name: i.name,
             quantity: i.quantity,

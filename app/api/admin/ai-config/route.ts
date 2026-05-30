@@ -45,14 +45,39 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ error: 'Forbidden — admin only' }, { status: 403 })
     }
 
-    const body = await req.json()
+    const body = await req.json() as Record<string, unknown>
 
-    // Whitelist updatable fields
-    const allowed = ['system_prompt', 'auto_reply_enabled', 'model', 'temperature', 'max_tokens']
+    const ALLOWED_MODELS = ['gpt-4o-mini', 'gpt-4o', 'gpt-4-turbo', 'gpt-3.5-turbo']
     const updates: Record<string, unknown> = { updated_at: new Date().toISOString(), updated_by: user.id }
 
-    for (const key of allowed) {
-      if (key in body) updates[key] = body[key]
+    if ('system_prompt' in body) {
+      if (typeof body.system_prompt !== 'string' || body.system_prompt.length > 8000) {
+        return NextResponse.json({ error: 'system_prompt must be a string ≤ 8000 chars' }, { status: 400 })
+      }
+      updates.system_prompt = body.system_prompt.trim()
+    }
+    if ('auto_reply_enabled' in body) {
+      updates.auto_reply_enabled = Boolean(body.auto_reply_enabled)
+    }
+    if ('model' in body) {
+      if (!ALLOWED_MODELS.includes(body.model as string)) {
+        return NextResponse.json({ error: `model must be one of: ${ALLOWED_MODELS.join(', ')}` }, { status: 400 })
+      }
+      updates.model = body.model
+    }
+    if ('temperature' in body) {
+      const t = Number(body.temperature)
+      if (isNaN(t) || t < 0 || t > 2) {
+        return NextResponse.json({ error: 'temperature must be between 0 and 2' }, { status: 400 })
+      }
+      updates.temperature = t
+    }
+    if ('max_tokens' in body) {
+      const mt = Number(body.max_tokens)
+      if (!Number.isInteger(mt) || mt < 50 || mt > 4096) {
+        return NextResponse.json({ error: 'max_tokens must be an integer between 50 and 4096' }, { status: 400 })
+      }
+      updates.max_tokens = mt
     }
 
     const { data, error } = await supabase
