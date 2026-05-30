@@ -48,3 +48,47 @@ export function hasRole(userRole: UserRole | null, requiredRole: UserRole): bool
   if (!userRole) return false
   return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole]
 }
+
+// ─── Chat / Auto-Reply Types ──────────────────────────────────────────────────
+
+export type SenderType = 'customer' | 'ai' | 'staff'
+
+export interface Message {
+  id: string
+  customer_id: string
+  conversation_id: string
+  content: string
+  sender_type: SenderType
+  staff_id: string | null
+  is_read: boolean
+  metadata: Record<string, unknown> | null
+  created_at: string
+}
+
+export interface MessageWithProfile extends Message {
+  customer?: Pick<Profile, 'id' | 'full_name' | 'email' | 'role'>
+  staff?: Pick<Profile, 'id' | 'full_name' | 'email'>
+}
+
+export interface Conversation {
+  conversation_id: string
+  customer_id: string
+  customer_name: string | null
+  customer_email: string
+  last_message: string
+  last_message_at: string
+  message_count: number
+  unread_count: number
+  messages?: Message[]
+}
+
+export interface AIConfig {
+  id: number
+  system_prompt: string
+  auto_reply_enabled: boolean
+  model: string
+  temperature: number
+  max_tokens: number
+  updated_at: string
+  updated_by: string | null
+}

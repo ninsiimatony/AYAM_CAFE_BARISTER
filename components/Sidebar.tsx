@@ -57,6 +57,28 @@ const navItems: NavItem[] = [
     ),
   },
   {
+    href: '/dashboard/support',
+    label: 'AI Support',
+    description: 'Chat with Barista Bot',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+      </svg>
+    ),
+  },
+  {
+    href: '/dashboard/admin/messages',
+    label: 'Messages',
+    description: 'Customer inbox + AI config',
+    requiredRole: 'staff',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+        <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+      </svg>
+    ),
+  },
+  {
     href: '/dashboard/profile',
     label: 'Profile',
     description: 'My account settings',
