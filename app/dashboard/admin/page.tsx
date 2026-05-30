@@ -22,8 +22,8 @@ export default async function AdminPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
         <div className="text-6xl mb-4">🔒</div>
-        <h1 className="text-2xl font-bold text-coffee-900 mb-2">Access Restricted</h1>
-        <p className="text-coffee-500 mb-6 text-center max-w-sm">
+        <h1 className="text-2xl font-bold text-coffee-900 dark:text-cream-100 mb-2">Access Restricted</h1>
+        <p className="text-coffee-500 dark:text-coffee-400 mb-6 text-center max-w-sm">
           The Admin Panel requires <strong>admin</strong> role access.
           Your current role is <strong>{profile?.role ?? 'unknown'}</strong>.
         </p>
@@ -53,8 +53,8 @@ export default async function AdminPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-coffee-900">Admin Panel</h1>
-          <p className="text-coffee-500 mt-1">System administration and user management</p>
+          <h1 className="text-2xl font-bold text-coffee-900 dark:text-cream-100">Admin Panel</h1>
+          <p className="text-coffee-500 dark:text-coffee-400 mt-1">System administration and user management</p>
         </div>
         <RoleBadge role="admin" />
       </div>
@@ -64,11 +64,11 @@ export default async function AdminPage() {
         {Object.entries(usersByRole).map(([role, users]) => (
           <div key={role} className="stat-card">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-coffee-500 capitalize">{role}s</p>
+              <p className="text-sm font-medium text-coffee-500 dark:text-coffee-400 capitalize">{role}s</p>
               <RoleBadge role={role as 'admin' | 'staff' | 'customer'} size="sm" />
             </div>
-            <p className="text-3xl font-bold text-coffee-900 mt-2">{users.length}</p>
-            <p className="text-xs text-coffee-400 mt-1">registered users</p>
+            <p className="text-3xl font-bold text-coffee-900 dark:text-cream-100 mt-2">{users.length}</p>
+            <p className="text-xs text-coffee-400 dark:text-coffee-500 mt-1">registered users</p>
           </div>
         ))}
       </div>
@@ -76,38 +76,38 @@ export default async function AdminPage() {
       {/* Users Table */}
       <div className="dashboard-card">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="font-semibold text-coffee-900">All Users</h2>
-          <span className="text-xs text-coffee-400">{allUsers?.length ?? 0} total</span>
+          <h2 className="font-semibold text-coffee-900 dark:text-cream-100">All Users</h2>
+          <span className="text-xs text-coffee-400 dark:text-coffee-500">{allUsers?.length ?? 0} total</span>
         </div>
 
         {allUsers && allUsers.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-coffee-100">
-                  <th className="pb-3 text-left font-medium text-coffee-500">User</th>
-                  <th className="pb-3 text-left font-medium text-coffee-500">Role</th>
-                  <th className="pb-3 text-left font-medium text-coffee-500 hidden sm:table-cell">Joined</th>
+                <tr className="border-b border-coffee-100 dark:border-coffee-700">
+                  <th className="pb-3 text-left font-medium text-coffee-500 dark:text-coffee-400">User</th>
+                  <th className="pb-3 text-left font-medium text-coffee-500 dark:text-coffee-400">Role</th>
+                  <th className="pb-3 text-left font-medium text-coffee-500 dark:text-coffee-400 hidden sm:table-cell">Joined</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-coffee-50">
+              <tbody className="divide-y divide-coffee-50 dark:divide-coffee-800">
                 {allUsers.map((u: Profile) => (
-                  <tr key={u.id} className="hover:bg-cream-50 transition-colors">
+                  <tr key={u.id} className="hover:bg-cream-50 dark:hover:bg-coffee-800/50 transition-colors">
                     <td className="py-3 pr-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-coffee-gradient text-white text-xs font-semibold flex-shrink-0">
                           {(u.full_name ?? u.email)?.[0]?.toUpperCase() ?? '?'}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-coffee-900 truncate">{u.full_name ?? '—'}</p>
-                          <p className="text-xs text-coffee-400 truncate">{u.email}</p>
+                          <p className="font-medium text-coffee-900 dark:text-cream-100 truncate">{u.full_name ?? '—'}</p>
+                          <p className="text-xs text-coffee-400 dark:text-coffee-500 truncate">{u.email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="py-3 pr-4">
                       <RoleBadge role={u.role} size="sm" />
                     </td>
-                    <td className="py-3 text-coffee-400 hidden sm:table-cell">
+                    <td className="py-3 text-coffee-400 dark:text-coffee-500 hidden sm:table-cell">
                       {new Date(u.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -116,13 +116,13 @@ export default async function AdminPage() {
             </table>
           </div>
         ) : (
-          <p className="text-center text-coffee-400 py-8">No users found.</p>
+          <p className="text-center text-coffee-400 dark:text-coffee-500 py-8">No users found.</p>
         )}
       </div>
 
       {/* System Info */}
       <div className="dashboard-card">
-        <h2 className="font-semibold text-coffee-900 mb-4">System Information</h2>
+        <h2 className="font-semibold text-coffee-900 dark:text-cream-100 mb-4">System Information</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             { label: 'Application', value: 'Ayam Café Barister v1.0' },
@@ -130,9 +130,9 @@ export default async function AdminPage() {
             { label: 'Framework', value: 'Next.js 14 (App Router)' },
             { label: 'Database', value: 'Supabase PostgreSQL' },
           ].map((item) => (
-            <div key={item.label} className="rounded-xl bg-cream-50 px-4 py-3">
-              <p className="text-xs font-medium text-coffee-400 mb-1">{item.label}</p>
-              <p className="text-sm font-semibold text-coffee-800">{item.value}</p>
+            <div key={item.label} className="rounded-xl bg-cream-50 dark:bg-coffee-800 px-4 py-3">
+              <p className="text-xs font-medium text-coffee-400 dark:text-coffee-500 mb-1">{item.label}</p>
+              <p className="text-sm font-semibold text-coffee-800 dark:text-cream-200">{item.value}</p>
             </div>
           ))}
         </div>

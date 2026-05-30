@@ -77,8 +77,8 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6 max-w-2xl animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-coffee-900">My Profile</h1>
-        <p className="text-coffee-500 mt-1">Manage your account settings and preferences</p>
+        <h1 className="text-2xl font-bold text-coffee-900 dark:text-cream-100">My Profile</h1>
+        <p className="text-coffee-500 dark:text-coffee-400 mt-1">Manage your account settings and preferences</p>
       </div>
 
       {/* Avatar & Role Card */}
@@ -87,21 +87,21 @@ export default function ProfilePage() {
           {initials}
         </div>
         <div>
-          <h2 className="text-xl font-bold text-coffee-900">{profile?.full_name ?? 'User'}</h2>
-          <p className="text-coffee-500 text-sm mb-2">{user?.email}</p>
+          <h2 className="text-xl font-bold text-coffee-900 dark:text-cream-100">{profile?.full_name ?? 'User'}</h2>
+          <p className="text-coffee-500 dark:text-coffee-400 text-sm mb-2">{user?.email}</p>
           <RoleBadge role={role} />
         </div>
       </div>
 
       {/* Update Profile */}
       <div className="dashboard-card">
-        <h2 className="font-semibold text-coffee-900 mb-5">Personal Information</h2>
+        <h2 className="font-semibold text-coffee-900 dark:text-cream-100 mb-5">Personal Information</h2>
 
         {message && (
           <div className={`mb-5 flex items-center gap-3 rounded-xl border p-4 text-sm ${
             message.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-700'
-              : 'bg-red-50 border-red-200 text-red-700'
+              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+              : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
           }`}>
             {message.type === 'success' ? '✓' : '✕'} {message.text}
           </div>
@@ -121,19 +121,19 @@ export default function ProfilePage() {
             }
           />
           <div>
-            <label className="text-sm font-medium text-coffee-800 block mb-1.5">Email Address</label>
+            <label className="text-sm font-medium text-coffee-800 dark:text-cream-200 block mb-1.5">Email Address</label>
             <input
               value={user?.email ?? ''}
               disabled
-              className="w-full rounded-xl border border-coffee-100 bg-coffee-50 px-4 py-3 text-coffee-500 text-sm cursor-not-allowed"
+              className="w-full rounded-xl border border-coffee-100 dark:border-coffee-700 bg-coffee-50 dark:bg-coffee-800 px-4 py-3 text-coffee-500 dark:text-coffee-400 text-sm cursor-not-allowed"
             />
-            <p className="text-xs text-coffee-400 mt-1">Email cannot be changed here.</p>
+            <p className="text-xs text-coffee-400 dark:text-coffee-500 mt-1">Email cannot be changed here.</p>
           </div>
           <div>
-            <label className="text-sm font-medium text-coffee-800 block mb-1.5">Role</label>
-            <div className="flex items-center gap-3 rounded-xl border border-coffee-100 bg-coffee-50 px-4 py-3">
+            <label className="text-sm font-medium text-coffee-800 dark:text-cream-200 block mb-1.5">Role</label>
+            <div className="flex items-center gap-3 rounded-xl border border-coffee-100 dark:border-coffee-700 bg-coffee-50 dark:bg-coffee-800 px-4 py-3">
               <RoleBadge role={role} size="sm" />
-              <span className="text-sm text-coffee-500">Contact an admin to change your role.</span>
+              <span className="text-sm text-coffee-500 dark:text-coffee-400">Contact an admin to change your role.</span>
             </div>
           </div>
           <AuthButton type="submit" loading={saving} fullWidth={false} className="px-8">
@@ -144,13 +144,13 @@ export default function ProfilePage() {
 
       {/* Change Password */}
       <div className="dashboard-card">
-        <h2 className="font-semibold text-coffee-900 mb-5">Change Password</h2>
+        <h2 className="font-semibold text-coffee-900 dark:text-cream-100 mb-5">Change Password</h2>
 
         {pwMessage && (
           <div className={`mb-5 flex items-center gap-3 rounded-xl border p-4 text-sm ${
             pwMessage.type === 'success'
-              ? 'bg-green-50 border-green-200 text-green-700'
-              : 'bg-red-50 border-red-200 text-red-700'
+              ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+              : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
           }`}>
             {pwMessage.type === 'success' ? '✓' : '✕'} {pwMessage.text}
           </div>
@@ -191,7 +191,7 @@ export default function ProfilePage() {
 
       {/* Account Info */}
       <div className="dashboard-card">
-        <h2 className="font-semibold text-coffee-900 mb-4">Account Details</h2>
+        <h2 className="font-semibold text-coffee-900 dark:text-cream-100 mb-4">Account Details</h2>
         <div className="space-y-3">
           {[
             { label: 'User ID', value: user?.id?.slice(0, 8) + '…' },
@@ -199,9 +199,9 @@ export default function ProfilePage() {
             { label: 'Last Updated', value: profile?.updated_at ? new Date(profile.updated_at).toLocaleDateString() : '—' },
             { label: 'Email Verified', value: user?.email_confirmed_at ? '✓ Verified' : '✗ Not verified' },
           ].map((item) => (
-            <div key={item.label} className="flex items-center justify-between rounded-xl bg-cream-50 px-4 py-3">
-              <p className="text-sm text-coffee-500">{item.label}</p>
-              <p className="text-sm font-medium text-coffee-800">{item.value}</p>
+            <div key={item.label} className="flex items-center justify-between rounded-xl bg-cream-50 dark:bg-coffee-800 px-4 py-3">
+              <p className="text-sm text-coffee-500 dark:text-coffee-400">{item.label}</p>
+              <p className="text-sm font-medium text-coffee-800 dark:text-cream-200">{item.value}</p>
             </div>
           ))}
         </div>
