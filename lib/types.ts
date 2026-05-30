@@ -53,6 +53,36 @@ export function hasRole(userRole: UserRole | null, requiredRole: UserRole): bool
 
 export type SenderType = 'customer' | 'ai' | 'staff'
 
+export interface OrderItemLine {
+  name: string
+  quantity: number
+  unit_price: number
+  subtotal: number
+  notes?: string
+}
+
+export interface OrderMetadata {
+  type: 'order'
+  order_id: string
+  items: OrderItemLine[]
+  total: number
+  status: string
+  notes?: string
+}
+
+export interface ReservationMetadata {
+  type: 'reservation'
+  reservation_id: string
+  customer_name: string
+  party_size: number
+  date: string
+  time: string
+  status: string
+  notes?: string
+}
+
+export type ChatMetadata = OrderMetadata | ReservationMetadata | Record<string, unknown>
+
 export interface Message {
   id: string
   customer_id: string
@@ -61,8 +91,39 @@ export interface Message {
   sender_type: SenderType
   staff_id: string | null
   is_read: boolean
-  metadata: Record<string, unknown> | null
+  metadata: ChatMetadata | null
   created_at: string
+}
+
+// ─── Orders & Reservations ────────────────────────────────────────────────────
+
+export interface Order {
+  id: string
+  customer_id: string
+  conversation_id: string
+  items: OrderItemLine[]
+  total: number
+  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
+  payment_method: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+  profiles?: { full_name: string | null; email: string } | null
+}
+
+export interface Reservation {
+  id: string
+  customer_id: string | null
+  conversation_id: string | null
+  customer_name: string
+  customer_phone: string | null
+  party_size: number
+  date: string
+  time: string
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  notes: string | null
+  created_at: string
+  updated_at: string
 }
 
 export interface MessageWithProfile extends Message {

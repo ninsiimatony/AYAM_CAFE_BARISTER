@@ -6,12 +6,13 @@ import MessageBubble, { TypingIndicator } from './MessageBubble'
 import MessageInput from './MessageInput'
 import type { Message } from '@/lib/types'
 
-const SUGGESTED_QUESTIONS = [
-  "What's on your menu?",
-  "What are your opening hours?",
-  "How do I track my order?",
-  "Do you have WiFi?",
-  "What's your cancellation policy?",
+const QUICK_ACTIONS = [
+  { text: "What's on the menu?",      icon: '🍽️' },
+  { text: "I'd like to place an order", icon: '☕' },
+  { text: 'Make a reservation',        icon: '📅' },
+  { text: 'What are your hours?',      icon: '🕐' },
+  { text: "What's your WiFi password?", icon: '📶' },
+  { text: 'What are your popular items?', icon: '⭐' },
 ]
 
 interface ChatWindowProps {
@@ -28,21 +29,17 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
   const [error, setError] = useState<string | null>(null)
   const [autoReplyOff, setAutoReplyOff] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Fetch conversation history on mount
   const fetchHistory = useCallback(async (convId?: string) => {
     setIsFetchingHistory(true)
     try {
       const params = convId ? `?conversationId=${convId}` : ''
       const res = await fetch(`/api/chat/history${params}`)
       if (res.ok) {
-        const data = await res.json()
+        const data = await res.json() as { messages?: Message[]; conversations?: { conversation_id: string }[] }
         setMessages(data.messages ?? [])
-
-        // If no conversationId passed, use the most recent conversation
-        if (!convId && data.conversations?.length > 0) {
-          setConversationId(data.conversations[0].conversation_id)
+        if (!convId && (data.conversations?.length ?? 0) > 0) {
+          setConversationId(data.conversations![0].conversation_id)
         }
       }
     } finally {
@@ -50,11 +47,8 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
     }
   }, [])
 
-  useEffect(() => {
-    fetchHistory(initialConvId)
-  }, [initialConvId, fetchHistory])
+  useEffect(() => { fetchHistory(initialConvId) }, [initialConvId, fetchHistory])
 
-  // Auto-scroll to latest message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: messages.length > 3 ? 'smooth' : 'auto' })
   }, [messages, isLoading])
@@ -63,9 +57,9 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
     setError(null)
     setIsLoading(true)
 
-    // Optimistically add customer message
+    const tempId = `temp-${Date.now()}`
     const tempMsg: Message = {
-      id: `temp-${Date.now()}`,
+      id: tempId,
       customer_id: '',
       conversation_id: conversationId ?? '',
       content: text,
@@ -84,24 +78,26 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
         body: JSON.stringify({ message: text, conversationId }),
       })
 
-      const data = await res.json()
+      const data = await res.json() as {
+        error?: string
+        customerMessage?: Message
+        aiMessage?: Message | null
+        conversationId?: string
+        autoReplyDisabled?: boolean
+      }
 
       if (!res.ok) {
         setError(data.error ?? 'Failed to send message')
-        setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id))
+        setMessages((prev) => prev.filter((m) => m.id !== tempId))
         return
       }
 
-      // Replace temp message + append AI reply
       const newMessages: Message[] = []
       if (data.customerMessage) newMessages.push(data.customerMessage)
       if (data.aiMessage) newMessages.push(data.aiMessage)
       if (data.autoReplyDisabled) setAutoReplyOff(true)
 
-      setMessages((prev) => [
-        ...prev.filter((m) => m.id !== tempMsg.id),
-        ...newMessages,
-      ])
+      setMessages((prev) => [...prev.filter((m) => m.id !== tempId), ...newMessages])
 
       if (data.conversationId && !conversationId) {
         setConversationId(data.conversationId)
@@ -109,7 +105,7 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
       }
     } catch {
       setError('Network error. Please try again.')
-      setMessages((prev) => prev.filter((m) => m.id !== tempMsg.id))
+      setMessages((prev) => prev.filter((m) => m.id !== tempId))
     } finally {
       setIsLoading(false)
     }
@@ -118,49 +114,56 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
   const isEmpty = !isFetchingHistory && messages.length === 0
 
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-coffee-100 bg-cream-50 overflow-hidden shadow-coffee">
-      {/* Chat Header */}
-      <div className="flex items-center gap-3 border-b border-coffee-100 bg-white px-5 py-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-coffee-gradient shadow-sm">
+    <div className="flex h-full flex-col rounded-2xl border border-coffee-100 dark:border-coffee-800 bg-cream-50 dark:bg-coffee-950 overflow-hidden shadow-coffee">
+      {/* Header */}
+      <div className="flex items-center gap-3 border-b border-coffee-100 dark:border-coffee-800 bg-white dark:bg-coffee-900 px-5 py-3.5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-coffee-gradient shadow-sm flex-shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
           </svg>
         </div>
-        <div>
-          <p className="font-semibold text-coffee-900">Barista Bot ☕</p>
-          <div className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-            <p className="text-xs text-coffee-400">
-              {autoReplyOff ? 'Auto-reply disabled — awaiting staff' : 'AI-powered · typically replies instantly'}
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-coffee-900 dark:text-cream-100 leading-none">Barista Bot ☕</p>
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <span className={`h-1.5 w-1.5 rounded-full ${autoReplyOff ? 'bg-yellow-400' : 'bg-green-400 animate-pulse'}`} />
+            <p className="text-xs text-coffee-400 truncate">
+              {autoReplyOff ? 'Staff will reply soon' : 'AI · orders · reservations · menu'}
             </p>
           </div>
         </div>
+        <button
+          onClick={() => { setMessages([]); setConversationId(undefined); setAutoReplyOff(false) }}
+          className="text-xs text-coffee-400 hover:text-coffee-600 dark:hover:text-cream-200 transition-colors flex-shrink-0"
+          title="Start new conversation"
+        >
+          New chat
+        </button>
       </div>
 
-      {/* Messages Area */}
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-auto px-4 py-4"
-      >
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-0.5">
         {isFetchingHistory ? (
-          <div className="flex justify-center py-8">
+          <div className="flex justify-center py-10">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-coffee-200 border-t-coffee-600" />
           </div>
         ) : isEmpty ? (
-          <div className="flex flex-col items-center justify-center h-full text-center py-8">
-            <div className="text-5xl mb-4">☕</div>
-            <h3 className="font-semibold text-coffee-800 mb-1">How can we help you today?</h3>
-            <p className="text-sm text-coffee-400 mb-6 max-w-xs">
-              Ask about our menu, orders, café hours, or anything else!
+          <div className="flex flex-col items-center justify-center h-full text-center py-6 px-2">
+            <div className="w-16 h-16 rounded-2xl bg-coffee-gradient flex items-center justify-center mb-4 shadow-coffee">
+              <span className="text-3xl">☕</span>
+            </div>
+            <h3 className="font-bold text-coffee-900 dark:text-cream-100 mb-1">What can I help you with?</h3>
+            <p className="text-sm text-coffee-400 mb-5 max-w-xs">
+              I can take orders, make reservations, recommend menu items, and answer questions.
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
-              {SUGGESTED_QUESTIONS.map((q) => (
+              {QUICK_ACTIONS.map((a) => (
                 <button
-                  key={q}
-                  onClick={() => sendMessage(q)}
-                  className="rounded-full border border-coffee-200 bg-white px-3 py-1.5 text-xs text-coffee-700 hover:bg-coffee-50 hover:border-coffee-400 transition-colors"
+                  key={a.text}
+                  onClick={() => sendMessage(a.text)}
+                  disabled={isLoading}
+                  className="flex items-center gap-1.5 rounded-full border border-coffee-200 dark:border-coffee-700 bg-white dark:bg-coffee-800 px-3 py-1.5 text-xs text-coffee-700 dark:text-cream-200 hover:bg-coffee-50 dark:hover:bg-coffee-700 hover:border-coffee-400 transition-colors"
                 >
-                  {q}
+                  <span>{a.icon}</span>{a.text}
                 </button>
               ))}
             </div>
@@ -179,19 +182,14 @@ export default function ChatWindow({ conversationId: initialConvId, onConversati
         )}
 
         {error && (
-          <div className="mx-auto my-2 max-w-xs rounded-xl bg-red-50 border border-red-200 px-4 py-2 text-center text-sm text-red-600">
+          <div className="mx-auto my-2 max-w-xs rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-2 text-center text-sm text-red-600 dark:text-red-400">
             {error}
           </div>
         )}
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
-      <MessageInput
-        onSend={sendMessage}
-        disabled={isLoading}
-        placeholder="Ask about our menu, orders, hours…"
-      />
+      <MessageInput onSend={sendMessage} disabled={isLoading} placeholder="Ask about menu, place an order, or make a reservation…" />
     </div>
   )
 }
