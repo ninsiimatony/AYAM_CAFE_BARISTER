@@ -380,6 +380,7 @@ export interface PlanConfig {
   name: string
   price: number           // USD/month
   stripePriceId: string
+  trialDays: number
   features: string[]
   signalAccess: SubscriptionTier[]
   telegramAccess: boolean
@@ -394,6 +395,7 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     name: 'Free',
     price: 0,
     stripePriceId: '',
+    trialDays: 0,
     features: [
       'Up to 3 free signals per week',
       'Basic signal feed',
@@ -412,6 +414,7 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     name: 'Pro',
     price: 29,
     stripePriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? '',
+    trialDays: 7,
     features: [
       'Unlimited Pro + Free signals',
       'Telegram VIP Pro channel',
@@ -432,6 +435,7 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     name: 'Elite',
     price: 99,
     stripePriceId: process.env.NEXT_PUBLIC_STRIPE_ELITE_PRICE_ID ?? '',
+    trialDays: 7,
     features: [
       'Everything in Pro',
       'Elite-only signals (highest RR)',
@@ -506,7 +510,146 @@ export const SESSION_TIMES: Record<MarketSession, { open: string; close: string;
   sydney:                 { open: '22:00', close: '07:00', timezone: 'UTC' },
 }
 
-// Legacy café types — kept temporarily to avoid breaking existing imports.
-// TODO: remove once all café pages are replaced.
+// ─── Legacy café types (kept for backwards compatibility) ─────────────────────
+// TODO: remove once all café pages are replaced with Forex equivalents.
+
 export type UserRoleLegacy = UserRole
 export type SenderType = 'customer' | 'ai' | 'staff'
+
+export interface RoleConfig {
+  label: string
+  color: string
+  bgColor: string
+  description: string
+}
+
+export const ROLE_CONFIGS: Record<UserRole, RoleConfig> = {
+  admin: {
+    label: 'Admin',
+    color: 'text-red-700',
+    bgColor: 'bg-red-100',
+    description: 'Full system access',
+  },
+  staff: {
+    label: 'Analyst',
+    color: 'text-blue-700',
+    bgColor: 'bg-blue-100',
+    description: 'Signal publishing access',
+  },
+  customer: {
+    label: 'Trader',
+    color: 'text-emerald-700',
+    bgColor: 'bg-emerald-100',
+    description: 'Trading access',
+  },
+}
+
+export const ROLE_HIERARCHY: Record<UserRole, number> = {
+  admin: 3,
+  staff: 2,
+  customer: 1,
+}
+
+export function hasRole(userRole: UserRole | null, requiredRole: UserRole): boolean {
+  if (!userRole) return false
+  return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole]
+}
+
+export interface OrderItemLine {
+  name: string
+  quantity: number
+  unit_price: number
+  subtotal: number
+  notes?: string
+}
+
+export interface OrderMetadata {
+  type: 'order'
+  order_id: string
+  items: OrderItemLine[]
+  total: number
+  status: string
+  notes?: string
+}
+
+export interface ReservationMetadata {
+  type: 'reservation'
+  reservation_id: string
+  customer_name: string
+  party_size: number
+  date: string
+  time: string
+  status: string
+  notes?: string
+}
+
+export type ChatMetadata = OrderMetadata | ReservationMetadata | Record<string, unknown>
+
+export interface Message {
+  id: string
+  customer_id: string
+  conversation_id: string
+  content: string
+  sender_type: SenderType
+  staff_id: string | null
+  is_read: boolean
+  metadata: ChatMetadata | null
+  created_at: string
+}
+
+export interface Order {
+  id: string
+  customer_id: string
+  conversation_id: string
+  items: OrderItemLine[]
+  total: number
+  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
+  payment_method: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+  profiles?: { full_name: string | null; email: string } | null
+}
+
+export interface Reservation {
+  id: string
+  customer_id: string | null
+  conversation_id: string | null
+  customer_name: string
+  customer_phone: string | null
+  party_size: number
+  date: string
+  time: string
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MessageWithProfile extends Message {
+  customer?: Pick<Profile, 'id' | 'full_name' | 'email' | 'role'>
+  staff?: Pick<Profile, 'id' | 'full_name' | 'email'>
+}
+
+export interface Conversation {
+  conversation_id: string
+  customer_id: string
+  customer_name: string | null
+  customer_email: string
+  last_message: string
+  last_message_at: string
+  message_count: number
+  unread_count: number
+  messages?: Message[]
+}
+
+export interface AIConfig {
+  id: number
+  system_prompt: string
+  auto_reply_enabled: boolean
+  model: string
+  temperature: number
+  max_tokens: number
+  updated_at: string
+  updated_by: string | null
+}

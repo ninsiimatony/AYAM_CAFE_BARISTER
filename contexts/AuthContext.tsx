@@ -17,6 +17,12 @@ const DEMO_PROFILE: Profile = {
   full_name: 'Demo Admin',
   avatar_url: null,
   role: 'admin' as UserRole,
+  subscription_tier: 'elite',
+  stripe_customer_id: null,
+  telegram_user_id: null,
+  timezone: 'UTC',
+  preferred_pairs: [],
+  risk_per_trade_pct: 1,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 }

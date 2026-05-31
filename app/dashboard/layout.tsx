@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Navbar from '@/components/Navbar'
 import Sidebar from '@/components/Sidebar'
+import SubscriptionBanner from '@/components/billing/SubscriptionBanner'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +11,6 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Auth check only when Supabase is configured
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
   if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co') {
     const { redirect } = await import('next/navigation')
@@ -21,7 +21,8 @@ export default async function DashboardLayout({
 
   return (
     <AuthProvider>
-      <div className="flex h-screen flex-col overflow-hidden bg-cream-100 dark:bg-coffee-950">
+      <div className="flex h-screen flex-col overflow-hidden bg-gray-950">
+        <SubscriptionBanner />
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <div className="hidden md:flex flex-shrink-0">
