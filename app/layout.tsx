@@ -5,11 +5,11 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Ayam Café Barister',
-    default: 'Ayam Café Barister — Management System',
+    template: '%s — TONY ELITE AI',
+    default: 'TONY ELITE AI — Institutional Forex Platform',
   },
-  description: 'Complete café management system with order tracking, staff management, and more.',
-  keywords: ['cafe', 'barista', 'management', 'orders', 'coffee'],
+  description: 'AI-powered Smart Money Concepts signals, risk management, and MT5 auto-execution for serious traders.',
+  keywords: ['forex', 'trading', 'SMC', 'signals', 'gold', 'XAUUSD', 'institutional'],
 }
 
 export default function RootLayout({

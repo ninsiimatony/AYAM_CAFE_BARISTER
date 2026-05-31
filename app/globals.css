@@ -4,13 +4,6 @@
 
 @layer base {
   :root {
-    --background: #fdf6ed;
-    --foreground: #2c1a0e;
-  }
-
-  .dark {
-    --background: #1a0f07;
-    --foreground: #f5ede3;
     color-scheme: dark;
   }
 
@@ -19,68 +12,28 @@
   }
 
   body {
-    @apply bg-cream-100 text-coffee-900 antialiased;
-    @apply dark:bg-coffee-950 dark:text-cream-100;
-  }
-
-  * {
-    @apply border-coffee-100;
+    @apply bg-[#050709] text-gray-200 antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   ::selection {
-    @apply bg-coffee-200 text-coffee-900;
+    @apply bg-blue-600/40 text-white;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-coffee-50;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-coffee-300 rounded-full;
+    @apply bg-white/10 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-coffee-400;
-  }
-}
-
-@layer components {
-  .auth-card {
-    @apply bg-white rounded-3xl shadow-coffee-lg border border-coffee-100/60 p-8 sm:p-10 w-full max-w-md mx-auto;
-  }
-
-  .coffee-divider {
-    @apply relative flex items-center gap-3 py-2;
-  }
-
-  .coffee-divider::before,
-  .coffee-divider::after {
-    content: '';
-    @apply flex-1 border-t border-coffee-200;
-  }
-
-  .dashboard-card {
-    @apply bg-white rounded-2xl border border-coffee-100 shadow-sm p-6 hover:shadow-coffee transition-shadow duration-200;
-    @apply dark:bg-coffee-900 dark:border-coffee-800 dark:hover:shadow-none;
-  }
-
-  .stat-card {
-    @apply dashboard-card flex flex-col gap-2;
-  }
-
-  /* Dark mode scrollbar */
-  .dark ::-webkit-scrollbar-track {
-    @apply bg-coffee-900;
-  }
-  .dark ::-webkit-scrollbar-thumb {
-    @apply bg-coffee-700;
-  }
-  .dark ::-webkit-scrollbar-thumb:hover {
-    @apply bg-coffee-600;
+    @apply bg-white/20;
   }
 }

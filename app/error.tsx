@@ -15,16 +15,20 @@ export default function GlobalError({
 
   return (
     <html>
-      <body className="flex min-h-screen items-center justify-center bg-cream-100 p-4">
-        <div className="max-w-md w-full text-center">
-          <div className="text-6xl mb-4">☕</div>
-          <h1 className="text-2xl font-bold text-coffee-900 mb-2">Something went wrong</h1>
-          <p className="text-coffee-500 mb-6">
-            We&apos;re sorry — an unexpected error occurred. Our team has been notified.
+      <body className="flex min-h-screen items-center justify-center bg-[#050709] p-4">
+        <div className="max-w-sm w-full text-center">
+          <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <h1 className="text-xl font-bold text-white mb-2">Something went wrong</h1>
+          <p className="text-sm text-gray-600 mb-6">
+            An unexpected error occurred. Please try again.
           </p>
           <button
             onClick={reset}
-            className="rounded-xl bg-coffee-gradient px-6 py-2.5 text-sm font-semibold text-white shadow-coffee hover:brightness-110 transition-all"
+            className="rounded-lg bg-blue-600 hover:bg-blue-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
           >
             Try again
           </button>
