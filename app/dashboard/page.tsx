@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
+import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import Link             from 'next/link'
 import type { Metadata } from 'next'
 import LivePrice from '@/components/LivePrice'
@@ -11,6 +13,7 @@ export const metadata: Metadata = { title: 'Dashboard — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -173,6 +176,10 @@ export default async function DashboardPage() {
       )}
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }
 
 function KpiCard({ label, value, suffix, color }: {

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { JournalEntry } from '@/lib/types'
@@ -30,6 +31,7 @@ const RATING_COLOR = ['', 'text-red-400', 'text-orange-400', 'text-yellow-400', 
 const STARS = (r: string) => '★'.repeat(parseInt(r)) + '☆'.repeat(5 - parseInt(r))
 
 export default async function JournalDetailPage({ params }: Props) {
+  try {
   const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -143,6 +145,10 @@ export default async function JournalDetailPage({ params }: Props) {
       </p>
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {

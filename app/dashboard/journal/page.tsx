@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import Link             from 'next/link'
 import JournalFeed      from '@/components/journal/JournalFeed'
 import type { Metadata } from 'next'
@@ -9,6 +10,7 @@ export const metadata: Metadata = { title: 'Trade Journal — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
 
 export default async function JournalPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -62,4 +64,8 @@ export default async function JournalPage() {
       <JournalFeed entries={(entries ?? []) as JournalEntry[]} />
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }

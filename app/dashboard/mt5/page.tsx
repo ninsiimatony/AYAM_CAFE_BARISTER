@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import Mt5Manager       from '@/components/mt5/Mt5Manager'
 import UpgradeGate      from '@/components/billing/UpgradeGate'
 import type { Metadata } from 'next'
@@ -9,6 +10,7 @@ export const metadata: Metadata = { title: 'MT5 Accounts — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
 
 export default async function Mt5Page() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -66,4 +68,8 @@ export default async function Mt5Page() {
       )}
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }

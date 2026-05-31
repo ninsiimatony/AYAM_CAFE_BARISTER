@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import { createClient } from '@/lib/supabase/server'
 import type { Profile } from '@/lib/types'
 import type { Metadata } from 'next'

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import type { Signal, SignalResult } from '@/lib/types'
@@ -27,6 +28,7 @@ const STATUS_CONFIG = {
 } as const
 
 export default async function SignalDetailPage({ params }: Props) {
+  try {
   const { id } = await params
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -201,6 +203,10 @@ export default async function SignalDetailPage({ params }: Props) {
       </div>
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }
 
 function PriceBox({ label, value, sub, accent }: { label: string; value?: string | null; sub?: string; accent?: 'red' | 'green' }) {

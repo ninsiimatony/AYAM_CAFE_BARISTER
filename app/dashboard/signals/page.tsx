@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
+import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import SignalFeed     from '@/components/signals/SignalFeed'
 import type { Metadata } from 'next'
 
@@ -6,6 +8,7 @@ export const metadata: Metadata = { title: 'Signals — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
 
 export default async function SignalsPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -75,4 +78,8 @@ export default async function SignalsPage() {
       />
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }

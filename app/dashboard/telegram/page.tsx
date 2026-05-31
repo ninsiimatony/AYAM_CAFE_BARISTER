@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import TelegramConnect  from '@/components/telegram/TelegramConnect'
 import UpgradeGate      from '@/components/billing/UpgradeGate'
 import type { Metadata } from 'next'
@@ -9,6 +10,7 @@ export const metadata: Metadata = { title: 'Telegram Alerts — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
 
 export default async function TelegramPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -68,4 +70,8 @@ export default async function TelegramPage() {
       </div>
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }

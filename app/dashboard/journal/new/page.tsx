@@ -1,11 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect }     from 'next/navigation'
+import { isRedirectError } from 'next/dist/client/components/redirect'
 import JournalEditor    from '@/components/journal/JournalEditor'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'New Journal Entry — TONY ELITE AI' }
 
 export default async function NewJournalPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
@@ -19,4 +21,8 @@ export default async function NewJournalPage() {
       <JournalEditor />
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }
