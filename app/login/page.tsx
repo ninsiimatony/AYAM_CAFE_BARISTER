@@ -24,13 +24,11 @@ function LoginForm() {
   const [loading, setLoading]           = useState(false)
   const [error, setError]               = useState<string | null>(null)
 
-  const supabase = createClient()
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await createClient().auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
     router.push(redirectTo)
     router.refresh()

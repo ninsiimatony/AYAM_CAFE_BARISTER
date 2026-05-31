@@ -17,11 +17,9 @@ export default function ResetPasswordPage() {
   const [fieldErrors, setFieldErrors]       = useState<Record<string, string>>({})
   const [validSession, setValidSession]     = useState<boolean | null>(null)
 
-  const supabase = createClient()
-
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => setValidSession(!!session))
-  }, [supabase.auth])
+    createClient().auth.getSession().then(({ data: { session } }) => setValidSession(!!session))
+  }, [])
 
   const validate = () => {
     const errors: Record<string, string> = {}
@@ -36,7 +34,7 @@ export default function ResetPasswordPage() {
     setError(null)
     if (!validate()) return
     setLoading(true)
-    const { error } = await supabase.auth.updateUser({ password })
+    const { error } = await createClient().auth.updateUser({ password })
     if (error) { setError(error.message); setLoading(false); return }
     setDone(true)
     setLoading(false)

@@ -1,7 +1,12 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
+
+export const viewport: Viewport = {
+  themeColor: '#0a0f1e',
+  colorScheme: 'dark',
+}
 
 export const metadata: Metadata = {
   title: {
@@ -12,8 +17,6 @@ export const metadata: Metadata = {
   keywords: ['forex', 'trading', 'SMC', 'signals', 'gold', 'XAUUSD', 'institutional'],
   applicationName: 'TONY ELITE AI',
   authors: [{ name: 'Tony Elite AI' }],
-  themeColor: '#0a0f1e',
-  colorScheme: 'dark',
   openGraph: {
     title: 'TONY ELITE AI — Institutional Forex Platform',
     description: 'AI-powered SMC signals, risk management, and MT5 auto-execution.',
