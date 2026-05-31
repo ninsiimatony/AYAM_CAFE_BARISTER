@@ -1,6 +1,11 @@
 import { createClient } from '@/lib/supabase/server'
 import Link             from 'next/link'
 import type { Metadata } from 'next'
+import LivePrice from '@/components/LivePrice'
+import {
+  RadioTower, Target, NotebookPen, BarChart2,
+  Send, Cpu, ShieldCheck,
+} from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Dashboard — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
@@ -45,14 +50,17 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-6 max-w-6xl">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-white">{greeting}, {displayName}</h1>
           <p className="text-sm text-gray-400 mt-0.5">Here&apos;s your trading overview</p>
         </div>
-        <span className={`rounded-xl px-3 py-1.5 text-xs font-bold uppercase ${tierCfg.bg} ${tierCfg.color}`}>
-          {tierCfg.label}
-        </span>
+        <div className="flex items-center gap-3 flex-wrap">
+          <LivePrice />
+          <span className={`rounded-xl px-3 py-1.5 text-xs font-bold uppercase ${tierCfg.bg} ${tierCfg.color}`}>
+            {tierCfg.label}
+          </span>
+        </div>
       </div>
 
       {/* KPI row */}
@@ -111,18 +119,18 @@ export default async function DashboardPage() {
           <h2 className="text-base font-semibold text-white mb-4">Quick Actions</h2>
           <div className="space-y-2">
             {[
-              { href: '/dashboard/signals',    label: 'View All Signals',     icon: '📡' },
-              { href: '/dashboard/risk',        label: 'Risk Calculator',      icon: '🎯' },
-              { href: '/dashboard/journal/new', label: 'Log a Trade',          icon: '📓' },
-              { href: '/dashboard/analytics',   label: 'Performance Stats',    icon: '📊' },
-              { href: '/dashboard/telegram',    label: 'Telegram Alerts',      icon: '✈' },
-              ...(tier === 'elite' ? [{ href: '/dashboard/mt5', label: 'MT5 Accounts', icon: '⚡' }] : []),
-              ...(isStaff ? [{ href: '/dashboard/admin', label: 'Admin Panel', icon: '🛡️' }] : []),
-            ].map((action) => (
-              <Link key={action.label} href={action.href}
+              { href: '/dashboard/signals',    label: 'View All Signals',  Icon: RadioTower },
+              { href: '/dashboard/risk',        label: 'Risk Calculator',   Icon: Target },
+              { href: '/dashboard/journal/new', label: 'Log a Trade',       Icon: NotebookPen },
+              { href: '/dashboard/analytics',   label: 'Performance Stats', Icon: BarChart2 },
+              { href: '/dashboard/telegram',    label: 'Telegram Alerts',   Icon: Send },
+              ...(tier === 'elite' ? [{ href: '/dashboard/mt5', label: 'MT5 Accounts', Icon: Cpu }] : []),
+              ...(isStaff ? [{ href: '/dashboard/admin', label: 'Admin Panel', Icon: ShieldCheck }] : []),
+            ].map(({ href, label, Icon }) => (
+              <Link key={label} href={href}
                 className="flex items-center gap-3 rounded-xl bg-gray-800/40 hover:bg-gray-800 border border-transparent hover:border-gray-700 px-4 py-3 transition-all">
-                <span className="text-lg">{action.icon}</span>
-                <span className="text-sm font-medium text-gray-300">{action.label}</span>
+                <Icon className="h-5 w-5 text-blue-400 flex-shrink-0" />
+                <span className="text-sm font-medium text-gray-300">{label}</span>
               </Link>
             ))}
           </div>
