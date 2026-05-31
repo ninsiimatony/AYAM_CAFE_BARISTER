@@ -226,7 +226,7 @@ export default function SignupPage() {
               <label className="text-sm font-medium text-coffee-800 block mb-2">
                 Select Your Role
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {ROLES.map((r) => (
                   <button
                     key={r.value}

@@ -24,25 +24,26 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Elite only
+  // Elite or admin/staff only
   const { data: profile } = await supabase
     .from('profiles')
-    .select('subscription_tier')
+    .select('subscription_tier, role')
     .eq('id', user.id)
     .single()
 
-  if (profile?.subscription_tier !== 'elite' && profile?.subscription_tier !== undefined) {
-    const isAdmin = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-    if (!['admin', 'staff'].includes(isAdmin.data?.role ?? '')) {
-      return NextResponse.json({ error: 'Elite subscription required for MT5 integration' }, { status: 403 })
-    }
+  const isStaff = ['admin', 'staff'].includes(profile?.role ?? '')
+  const isElite = profile?.subscription_tier === 'elite'
+
+  if (!isElite && !isStaff) {
+    return NextResponse.json({ error: 'Elite subscription required for MT5 integration' }, { status: 403 })
   }
 
-  const { account_number, broker_name, server_name, account_type, currency, leverage, mt5_login, mt5_password } = await req.json()
+  let parsed: Record<string, unknown>
+  try { parsed = await req.json() } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }) }
+  const { account_number, broker_name, server_name, account_type, currency, leverage, mt5_login, mt5_password } = parsed as {
+    account_number: number; broker_name: string; server_name: string; account_type?: string
+    currency?: string; leverage?: number; mt5_login?: string; mt5_password?: string
+  }
 
   if (!account_number || !broker_name || !server_name) {
     return NextResponse.json({ error: 'account_number, broker_name, and server_name are required' }, { status: 400 })

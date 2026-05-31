@@ -46,42 +46,44 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const body = await req.json()
-  const {
-    pair, direction, timeframe, session,
-    entry_zone_low, entry_zone_high,
-    stop_loss, take_profit_1, take_profit_2, take_profit_3,
-    risk_reward_1, risk_reward_2, risk_reward_3, pip_risk,
-    smc_patterns, bias, htf_bias, confluence_score,
-    tier_required, analysis_text, chart_url, notes,
-  }: {
-    pair:             string
-    direction:        SignalDirection
-    timeframe:        SignalTimeframe
-    session?:         string
-    entry_zone_low:   number
-    entry_zone_high:  number
-    stop_loss:        number
-    take_profit_1:    number
-    take_profit_2?:   number
-    take_profit_3?:   number
-    risk_reward_1?:   number
-    risk_reward_2?:   number
-    risk_reward_3?:   number
-    pip_risk?:        number
-    smc_patterns:     string[]
-    bias:             MarketBias
-    htf_bias?:        MarketBias
-    confluence_score?: number
-    tier_required:    SubscriptionTier
-    analysis_text?:   string
-    chart_url?:       string
-    notes?:           string
-  } = body
+  let rawBody: Record<string, unknown>
+  try { rawBody = await req.json() } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }) }
+
+  const pair             = rawBody.pair             as string
+  const direction        = rawBody.direction        as SignalDirection
+  const timeframe        = rawBody.timeframe        as SignalTimeframe
+  const session          = rawBody.session          as string | undefined
+  const entry_zone_low   = rawBody.entry_zone_low   as number
+  const entry_zone_high  = rawBody.entry_zone_high  as number
+  const stop_loss        = rawBody.stop_loss        as number
+  const take_profit_1    = rawBody.take_profit_1    as number
+  const take_profit_2    = rawBody.take_profit_2    as number | undefined
+  const take_profit_3    = rawBody.take_profit_3    as number | undefined
+  const risk_reward_1    = rawBody.risk_reward_1    as number | undefined
+  const risk_reward_2    = rawBody.risk_reward_2    as number | undefined
+  const risk_reward_3    = rawBody.risk_reward_3    as number | undefined
+  const pip_risk         = rawBody.pip_risk         as number | undefined
+  const smc_patterns     = rawBody.smc_patterns     as string[]
+  const bias             = rawBody.bias             as MarketBias
+  const htf_bias         = rawBody.htf_bias         as MarketBias | undefined
+  const confluence_score = rawBody.confluence_score as number | undefined
+  const tier_required    = rawBody.tier_required    as SubscriptionTier
+  const analysis_text    = rawBody.analysis_text    as string | undefined
+  const chart_url        = rawBody.chart_url        as string | undefined
+  const notes            = rawBody.notes            as string | undefined
 
   // Validate required fields
   if (!pair || !direction || !timeframe || !entry_zone_low || !stop_loss || !take_profit_1) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+  if (!['buy', 'sell'].includes(direction)) {
+    return NextResponse.json({ error: 'Invalid direction' }, { status: 400 })
+  }
+  if (!Array.isArray(smc_patterns) || smc_patterns.some((p) => typeof p !== 'string' || p.length > 50)) {
+    return NextResponse.json({ error: 'Invalid smc_patterns' }, { status: 400 })
+  }
+  if (typeof pair !== 'string' || pair.length > 10) {
+    return NextResponse.json({ error: 'Invalid pair' }, { status: 400 })
   }
 
   const { data: signal, error } = await supabase

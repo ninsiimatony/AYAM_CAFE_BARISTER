@@ -38,7 +38,8 @@ export async function PATCH(req: Request, { params }: Params) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const body    = await req.json()
+  let body: Record<string, unknown>
+  try { body = await req.json() } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }) }
   const admin   = createAdminClient()
 
   // ── Publish action ──────────────────────────────────────────────────────────
@@ -80,9 +81,11 @@ export async function PATCH(req: Request, { params }: Params) {
 
   // ── Update TP/SL result ─────────────────────────────────────────────────────
   if (body.action === 'result') {
-    const { event, price, pips } = body
+    const { event, price, pips } = body as { event: string; price: number; pips?: number }
     const validEvents = ['tp1_hit', 'tp2_hit', 'tp3_hit', 'sl_hit', 'be_hit', 'cancelled', 'expired']
     if (!validEvents.includes(event)) return NextResponse.json({ error: 'Invalid event' }, { status: 400 })
+    if (typeof price !== 'number' || price <= 0) return NextResponse.json({ error: 'Invalid price' }, { status: 400 })
+    if (pips !== undefined && typeof pips !== 'number') return NextResponse.json({ error: 'Invalid pips' }, { status: 400 })
 
     const { data: signal } = await admin.from('signals').select('*').eq('id', id).single()
     if (!signal) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -104,7 +107,7 @@ export async function PATCH(req: Request, { params }: Params) {
       try {
         const proChannelId   = process.env.TELEGRAM_VIP_PRO_CHANNEL_ID
         const eliteChannelId = process.env.TELEGRAM_VIP_ELITE_CHANNEL_ID
-        const updateMsg = formatTPUpdateMessage(signal, event, price, pips)
+        const updateMsg = formatTPUpdateMessage(signal, event, price, pips ?? 0)
 
         const channelId = eliteChannelId ?? proChannelId
         if (channelId) {

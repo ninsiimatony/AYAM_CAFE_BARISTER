@@ -52,7 +52,7 @@ export default function MobileSidebar({ open, onClose }: Props) {
       />
 
       {/* Drawer */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-gray-900 border-r border-gray-800 flex flex-col transition-transform duration-200 ease-out md:hidden ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-[min(288px,82vw)] bg-gray-900 border-r border-gray-800 flex flex-col transition-transform duration-200 ease-out md:hidden ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-800">
           <div className="flex items-center gap-2.5">

@@ -23,9 +23,9 @@ interface TelegramUpdate {
 }
 
 export async function POST(req: Request) {
-  // Verify secret token (set when registering webhook)
+  // Verify secret token — reject if env var missing (fail-closed not fail-open)
   const secret = req.headers.get('x-telegram-bot-api-secret-token')
-  if (process.env.TELEGRAM_WEBHOOK_SECRET && secret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
+  if (!process.env.TELEGRAM_WEBHOOK_SECRET || secret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
