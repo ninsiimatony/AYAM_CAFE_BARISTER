@@ -12,26 +12,26 @@ interface Props {
 
 const STATUS_FILTERS = [
   { value: '',         label: 'All' },
-  { value: 'active',   label: '🟢 Active' },
-  { value: 'tp1_hit',  label: '✅ TP1 Hit' },
-  { value: 'tp2_hit',  label: '✅✅ TP2 Hit' },
-  { value: 'tp3_hit',  label: '🏆 Full Target' },
-  { value: 'sl_hit',   label: '❌ SL Hit' },
-  { value: 'pending',  label: '⏳ Pending' },
+  { value: 'active',   label: 'Active' },
+  { value: 'tp1_hit',  label: 'TP1 Hit' },
+  { value: 'tp2_hit',  label: 'TP2 Hit' },
+  { value: 'tp3_hit',  label: 'Full Target' },
+  { value: 'sl_hit',   label: 'SL Hit' },
+  { value: 'pending',  label: 'Pending' },
 ]
 
 const DIRECTION_FILTERS = [
   { value: '', label: 'All Directions' },
-  { value: 'buy',  label: '🟢 Buy' },
-  { value: 'sell', label: '🔴 Sell' },
+  { value: 'buy',  label: 'Buy' },
+  { value: 'sell', label: 'Sell' },
 ]
 
 export default function SignalFeed({ initialSignals, userTier, isStaff }: Props) {
-  const [signals, setSignals]       = useState<Signal[]>(initialSignals)
-  const [statusFilter, setStatus]   = useState('')
-  const [dirFilter, setDir]         = useState('')
-  const [pairFilter, setPair]       = useState('')
-  const [loading, setLoading]       = useState(false)
+  const [signals, setSignals]     = useState<Signal[]>(initialSignals)
+  const [statusFilter, setStatus] = useState('')
+  const [dirFilter, setDir]       = useState('')
+  const [pairFilter, setPair]     = useState('')
+  const [loading, setLoading]     = useState(false)
 
   async function loadSignals() {
     setLoading(true)
@@ -39,7 +39,7 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
       const params = new URLSearchParams()
       if (statusFilter) params.set('status', statusFilter)
       if (pairFilter)   params.set('pair', pairFilter)
-      const res = await fetch(`/api/signals?${params}`)
+      const res  = await fetch(`/api/signals?${params}`)
       const data = await res.json()
       setSignals(data.signals ?? [])
     } finally {
@@ -49,14 +49,12 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
 
   useEffect(() => { loadSignals() }, [statusFilter, dirFilter, pairFilter])
 
-  const filtered = dirFilter
-    ? signals.filter((s) => s.direction === dirFilter)
-    : signals
+  const filtered = dirFilter ? signals.filter((s) => s.direction === dirFilter) : signals
 
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 items-center">
         {STATUS_FILTERS.map((f) => (
           <button
             key={f.value}
@@ -64,13 +62,13 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               statusFilter === f.value
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                : 'bg-white/[0.04] border border-white/[0.06] text-gray-500 hover:text-gray-300 hover:bg-white/[0.07]'
             }`}
           >
             {f.label}
           </button>
         ))}
-        <div className="h-6 w-px bg-gray-700 self-center" />
+        <div className="h-4 w-px bg-white/[0.08] mx-1" />
         {DIRECTION_FILTERS.map((f) => (
           <button
             key={f.value}
@@ -78,7 +76,7 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
             className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
               dirFilter === f.value
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                : 'bg-white/[0.04] border border-white/[0.06] text-gray-500 hover:text-gray-300 hover:bg-white/[0.07]'
             }`}
           >
             {f.label}
@@ -88,27 +86,27 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
           value={pairFilter}
           onChange={(e) => setPair(e.target.value.toUpperCase())}
           placeholder="Filter pair…"
-          className="rounded-lg bg-gray-800 border border-gray-700 px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none w-28"
+          className="rounded-lg bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 text-xs text-white placeholder-gray-700 focus:border-blue-500/50 focus:outline-none w-28 transition-colors"
         />
       </div>
 
-      {/* Signals */}
+      {/* Results */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <svg className="h-6 w-6 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         </div>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-800">
-            <svg className="h-7 w-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.03] border border-white/[0.06]">
+            <svg className="h-6 w-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <p className="text-gray-400 font-medium">No signals found</p>
-          <p className="text-sm text-gray-600 mt-1">Try adjusting your filters</p>
+          <p className="text-gray-500 font-medium text-sm">No signals found</p>
+          <p className="text-xs text-gray-700 mt-1">Try adjusting your filters</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

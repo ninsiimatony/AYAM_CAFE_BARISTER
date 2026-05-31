@@ -7,16 +7,23 @@ import { createClient } from '@/lib/supabase/client'
 import AuthInput from '@/components/auth/AuthInput'
 import AuthButton from '@/components/auth/AuthButton'
 
+const FEATURES = [
+  'Real-time SMC signals — BOS, CHOCH, Order Blocks',
+  'Institutional-grade confluence scoring',
+  'Telegram VIP alerts for Pro & Elite',
+  'MT5 auto-execution bridge',
+]
+
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') ?? '/dashboard'
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail]               = useState('')
+  const [password, setPassword]         = useState('')
+  const [loading, setLoading]           = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError]               = useState<string | null>(null)
 
   const supabase = createClient()
 
@@ -24,15 +31,8 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     setLoading(true)
-
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
-    }
-
+    if (error) { setError(error.message); setLoading(false); return }
     router.push(redirectTo)
     router.refresh()
   }
@@ -41,40 +41,26 @@ function LoginForm() {
     setGoogleLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}`,
-      },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}` },
     })
-    if (error) {
-      setError(error.message)
-      setGoogleLoading(false)
-    }
+    if (error) { setError(error.message); setGoogleLoading(false) }
   }
 
   return (
-    <div className="auth-card">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-coffee-900">Welcome back</h2>
-        <p className="text-coffee-500 mt-1.5">Sign in to your account to continue</p>
+    <div className="w-full max-w-sm">
+      <div className="mb-7">
+        <p className="text-[11px] font-bold text-gray-600 uppercase tracking-widest mb-1">Welcome back</p>
+        <h2 className="text-2xl font-bold text-white">Sign in</h2>
       </div>
 
       {error && (
-        <div className="mb-6 flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-700">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-          </svg>
+        <div className="mb-5 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
-      {/* Google OAuth */}
-      <AuthButton
-        variant="google"
-        loading={googleLoading}
-        onClick={handleGoogleLogin}
-        className="mb-6"
-      >
-        <svg className="h-5 w-5" viewBox="0 0 24 24">
+      <AuthButton variant="google" loading={googleLoading} onClick={handleGoogleLogin} className="mb-5">
+        <svg className="h-4 w-4" viewBox="0 0 24 24">
           <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
           <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -83,13 +69,15 @@ function LoginForm() {
         Continue with Google
       </AuthButton>
 
-      <div className="coffee-divider mb-6">
-        <span className="text-xs text-coffee-400 font-medium">or sign in with email</span>
+      <div className="flex items-center gap-3 mb-5">
+        <div className="flex-1 h-px bg-white/[0.06]" />
+        <span className="text-[11px] text-gray-700 font-medium">or sign in with email</span>
+        <div className="flex-1 h-px bg-white/[0.06]" />
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-5">
+      <form onSubmit={handleLogin} className="space-y-4">
         <AuthInput
-          label="Email Address"
+          label="Email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -103,7 +91,6 @@ function LoginForm() {
             </svg>
           }
         />
-
         <AuthInput
           label="Password"
           type="password"
@@ -120,10 +107,7 @@ function LoginForm() {
         />
 
         <div className="flex justify-end">
-          <Link
-            href="/forgot-password"
-            className="text-sm text-coffee-600 hover:text-coffee-800 font-medium transition-colors"
-          >
+          <Link href="/forgot-password" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">
             Forgot password?
           </Link>
         </div>
@@ -133,9 +117,9 @@ function LoginForm() {
         </AuthButton>
       </form>
 
-      <p className="mt-6 text-center text-sm text-coffee-500">
-        Don&apos;t have an account?{' '}
-        <Link href="/signup" className="font-semibold text-coffee-700 hover:text-coffee-900 transition-colors">
+      <p className="mt-6 text-center text-sm text-gray-700">
+        No account?{' '}
+        <Link href="/signup" className="font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           Create one free
         </Link>
       </p>
@@ -145,61 +129,58 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-cream-gradient flex">
-      {/* Left Panel — branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-coffee-gradient flex-col items-center justify-center p-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-hero-pattern opacity-10" />
-        <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-caramel-400/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-64 w-64 rounded-full bg-coffee-800/20 blur-3xl" />
+    <div className="min-h-screen bg-[#050709] flex">
+      {/* Left — branding */}
+      <div className="hidden lg:flex lg:w-[45%] flex-col justify-between p-12 border-r border-white/[0.05] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-transparent to-transparent pointer-events-none" />
 
-        <div className="relative text-center">
-          <div className="flex h-20 w-20 mx-auto items-center justify-center rounded-3xl bg-white/10 border border-white/20 mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-cream-200" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M2 21v-2h2V7c0-.55.196-1.021.588-1.413A1.925 1.925 0 0 1 6 5h12c.55 0 1.021.196 1.413.587C19.804 5.98 20 6.45 20 7v2h2v4h-2v6h2v2H2Zm4-2h10v-6H6v6Zm0-8h10V7H6v4Zm12 2h1v-2h-1v2Z"/>
-            </svg>
+        <div className="flex items-center gap-2.5 relative">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+            <span className="text-[11px] font-black text-white">T</span>
           </div>
-          <h1 className="text-3xl font-bold text-white mb-3">Ayam Café Barister</h1>
-          <p className="text-cream-300 text-lg leading-relaxed max-w-xs">
-            Your complete café management platform. Brew success every day.
-          </p>
+          <span className="text-sm font-bold text-white tracking-wide">TONY ELITE AI</span>
+        </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 text-left">
-            {[
-              { icon: '☕', text: 'Real-time order tracking' },
-              { icon: '👥', text: 'Staff & role management' },
-              { icon: '📊', text: 'Sales analytics & reports' },
-              { icon: '🔒', text: 'Secure role-based access' },
-            ].map((item) => (
-              <div key={item.text} className="flex items-center gap-3 text-cream-300">
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-sm">{item.text}</span>
+        <div className="relative">
+          <p className="text-[11px] font-semibold text-blue-400/70 uppercase tracking-widest mb-3">Institutional Forex · SMC</p>
+          <h1 className="text-3xl font-bold text-white leading-tight mb-4">
+            Trade with<br />institutional edge
+          </h1>
+          <p className="text-gray-500 text-sm leading-relaxed mb-10 max-w-xs">
+            AI-powered Smart Money Concepts signals, risk management, and automated execution.
+          </p>
+          <div className="space-y-3">
+            {FEATURES.map((f) => (
+              <div key={f} className="flex items-center gap-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-500 shrink-0" />
+                <span className="text-sm text-gray-500">{f}</span>
               </div>
             ))}
           </div>
         </div>
+
+        <p className="text-[11px] text-gray-800 relative">
+          © {new Date().getFullYear()} Tony Elite AI. All rights reserved.
+        </p>
       </div>
 
-      {/* Right Panel — form */}
-      <div className="flex flex-1 items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md animate-slide-up">
-          {/* Mobile logo */}
-          <div className="flex items-center gap-2.5 mb-8 lg:hidden">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-coffee-gradient shadow-coffee">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-cream-100" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M2 21v-2h2V7c0-.55.196-1.021.588-1.413A1.925 1.925 0 0 1 6 5h12c.55 0 1.021.196 1.413.587C19.804 5.98 20 6.45 20 7v2h2v4h-2v6h2v2H2Zm4-2h10v-6H6v6Zm0-8h10V7H6v4Zm12 2h1v-2h-1v2Z"/>
-              </svg>
-            </div>
-            <span className="font-bold text-coffee-900">Ayam Café Barister</span>
+      {/* Right — form */}
+      <div className="flex flex-1 flex-col items-center justify-center p-8">
+        {/* Mobile logo */}
+        <div className="flex items-center gap-2 mb-10 lg:hidden">
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+            <span className="text-[11px] font-black text-white">T</span>
           </div>
-
-          <Suspense fallback={
-            <div className="auth-card flex items-center justify-center min-h-[400px]">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-coffee-200 border-t-coffee-600" />
-            </div>
-          }>
-            <LoginForm />
-          </Suspense>
+          <span className="text-sm font-bold text-white tracking-wide">TONY ELITE AI</span>
         </div>
+
+        <Suspense fallback={
+          <div className="flex items-center justify-center">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-blue-500" />
+          </div>
+        }>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   )
