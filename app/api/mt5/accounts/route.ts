@@ -104,7 +104,12 @@ export async function DELETE(req: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { id } = await req.json()
+  // Accept id from either URL query param or JSON body for flexibility
+  const url = new URL(req.url)
+  const id = url.searchParams.get('id') ?? (await req.json().catch(() => ({}))).id
+
+  if (!id) return NextResponse.json({ error: 'Missing account id' }, { status: 400 })
+
   const { error } = await supabase
     .from('mt5_accounts')
     .update({ is_active: false })

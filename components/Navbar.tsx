@@ -4,13 +4,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import RoleBadge from './RoleBadge'
-import ThemeToggle from './dashboard/ThemeToggle'
+import MobileSidebar from './MobileSidebar'
 
 export default function Navbar() {
-  const { user, profile, role, signOut } = useAuth()
+  const { user, profile, signOut } = useAuth()
   const router = useRouter()
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleSignOut = async () => {
     await signOut()
@@ -18,104 +17,114 @@ export default function Navbar() {
   }
 
   const initials = profile?.full_name
-    ? profile.full_name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+    ? profile.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
     : user?.email?.[0]?.toUpperCase() ?? '?'
 
+  const tier = (profile as { subscription_tier?: string } | null)?.subscription_tier ?? 'free'
+  const TIER_BADGE = {
+    free:  null,
+    pro:   { label: 'PRO',   color: 'bg-blue-900/60 text-blue-300 border border-blue-700/40' },
+    elite: { label: 'ELITE', color: 'bg-amber-900/60 text-amber-300 border border-amber-700/40' },
+  } as const
+  const tierBadge = TIER_BADGE[tier as keyof typeof TIER_BADGE]
+
   return (
-    <header className="sticky top-0 z-40 border-b border-coffee-100 dark:border-coffee-800 bg-white/95 dark:bg-coffee-900/95 backdrop-blur-sm shadow-sm">
-      <div className="flex h-16 items-center justify-between px-4 lg:px-6">
-        {/* Logo */}
-        <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-coffee-gradient shadow-coffee">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-cream-100"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path d="M2 21v-2h2V7c0-.55.196-1.021.588-1.413A1.925 1.925 0 0 1 6 5h12c.55 0 1.021.196 1.413.587C19.804 5.98 20 6.45 20 7v2h2v4h-2v6h2v2H2Zm4-2h10v-6H6v6Zm0-8h10V7H6v4Zm12 2h1v-2h-1v2Z"/>
+    <>
+      <header className="sticky top-0 z-40 border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
+        <div className="flex h-14 items-center justify-between px-4 lg:px-6">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="md:hidden flex items-center justify-center h-9 w-9 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+            aria-label="Open navigation"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-          </div>
-          <div>
-            <p className="text-sm font-bold text-coffee-900 leading-none">Ayam Café</p>
-            <p className="text-xs text-coffee-400 leading-none mt-0.5">Barister</p>
-          </div>
-        </Link>
+          </button>
 
-        {/* Right section */}
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          {role && <RoleBadge role={role} size="sm" />}
-
-          {/* User menu */}
-          <div className="relative">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-coffee-50 transition-colors"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-coffee-gradient text-white text-sm font-semibold">
-                {initials}
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-sm font-medium text-coffee-900 leading-none">
-                  {profile?.full_name ?? 'User'}
-                </p>
-                <p className="text-xs text-coffee-400 leading-none mt-0.5 truncate max-w-[140px]">
-                  {user?.email}
-                </p>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 text-coffee-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`}
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          {/* Logo */}
+          <Link href="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 shadow-lg">
+              <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
-            </button>
+            </div>
+            <div className="hidden sm:block">
+              <p className="text-sm font-bold text-white leading-none">TONY ELITE AI</p>
+              <p className="text-[10px] text-gray-500 leading-none mt-0.5">Institutional Forex</p>
+            </div>
+          </Link>
 
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-coffee-100 bg-white shadow-coffee-lg py-2 z-50 animate-fade-in">
-                <Link
-                  href="/dashboard/profile"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-coffee-700 hover:bg-coffee-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-coffee-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                  </svg>
-                  My Profile
-                </Link>
-                <Link
-                  href="/dashboard"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-coffee-700 hover:bg-coffee-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-coffee-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-                  </svg>
-                  Dashboard
-                </Link>
-                <div className="my-1 border-t border-coffee-100" />
-                <button
-                  onClick={handleSignOut}
-                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
-                  </svg>
-                  Sign Out
-                </button>
-              </div>
+          {/* Right side */}
+          <div className="flex items-center gap-2">
+            {tierBadge && (
+              <span className={`hidden sm:inline-flex rounded-md px-2 py-0.5 text-[10px] font-bold uppercase ${tierBadge.color}`}>
+                {tierBadge.label}
+              </span>
             )}
+
+            {/* User avatar + dropdown */}
+            <UserMenu initials={initials} name={profile?.full_name ?? 'Trader'} email={user?.email ?? ''} onSignOut={handleSignOut} />
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Click outside to close */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-30" onClick={() => setMenuOpen(false)} />
+      {/* Mobile slide-out sidebar */}
+      <MobileSidebar open={mobileOpen} onClose={() => setMobileOpen(false)} />
+    </>
+  )
+}
+
+function UserMenu({ initials, name, email, onSignOut }: { initials: string; name: string; email: string; onSignOut: () => void }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-gray-800 transition-colors"
+      >
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white text-xs font-bold flex-shrink-0">
+          {initials}
+        </div>
+        <div className="hidden sm:block text-left">
+          <p className="text-xs font-semibold text-white leading-none">{name}</p>
+          <p className="text-[10px] text-gray-500 leading-none mt-0.5 truncate max-w-[120px]">{email}</p>
+        </div>
+        <svg className={`hidden sm:block h-3.5 w-3.5 text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-gray-800 bg-gray-900 shadow-2xl py-2 z-40">
+            <Link href="/dashboard/profile" onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+              <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Profile
+            </Link>
+            <Link href="/dashboard/billing" onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+              <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              Billing
+            </Link>
+            <div className="my-1.5 border-t border-gray-800" />
+            <button onClick={onSignOut}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition-colors">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Sign Out
+            </button>
+          </div>
+        </>
       )}
-    </header>
+    </div>
   )
 }

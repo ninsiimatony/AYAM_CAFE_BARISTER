@@ -22,11 +22,13 @@ export async function GET(req: Request) {
   const { data: notifications, error } = await query
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  const unreadCount = unreadOnly
-    ? notifications?.length ?? 0
-    : (await supabase.from('notifications').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('is_read', false)).count ?? 0
+  const { count: unreadCount } = await supabase
+    .from('notifications')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .eq('is_read', false)
 
-  return NextResponse.json({ notifications, unread_count: unreadCount })
+  return NextResponse.json({ notifications, unread_count: unreadCount ?? 0 })
 }
 
 export async function PATCH(req: Request) {
@@ -39,7 +41,7 @@ export async function PATCH(req: Request) {
   if (body.mark_all_read) {
     await supabase
       .from('notifications')
-      .update({ is_read: true, read_at: new Date().toISOString() })
+      .update({ is_read: true })
       .eq('user_id', user.id)
       .eq('is_read', false)
     return NextResponse.json({ ok: true })
@@ -48,7 +50,7 @@ export async function PATCH(req: Request) {
   if (body.id) {
     await supabase
       .from('notifications')
-      .update({ is_read: true, read_at: new Date().toISOString() })
+      .update({ is_read: true })
       .eq('id', body.id)
       .eq('user_id', user.id)
     return NextResponse.json({ ok: true })

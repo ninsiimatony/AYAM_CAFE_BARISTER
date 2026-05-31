@@ -1,19 +1,25 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { SMCAnalysis } from './smc-engine'
-import type { SignalTimeframe, MarketBias } from './types'
+import type { SignalTimeframe } from './types'
 
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+// Lazy singleton — prevents module-level init from failing at build time.
+let _client: Anthropic | null = null
+
+function getClient(): Anthropic {
+  if (!_client) {
+    _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  }
+  return _client
+}
 
 export interface AISignalAnalysis {
-  analysis_text:      string    // Full institutional analysis for traders
-  entry_narrative:    string    // Why this is a valid entry
-  risk_warning:       string    // Key risks to watch
-  confidence_score:   number    // 1–10
+  analysis_text:      string
+  entry_narrative:    string
+  risk_warning:       string
+  confidence_score:   number
   confidence_reason:  string
-  invalidation:       string    // What would invalidate the setup
-  pair_sentiment:     string    // Market context
+  invalidation:       string
+  pair_sentiment:     string
 }
 
 const SMC_SYSTEM_PROMPT = `You are an institutional Forex analyst specializing in Smart Money Concepts (SMC).
@@ -65,7 +71,7 @@ Pip Risk:   ${smc.pip_risk?.toFixed(1) ?? 'N/A'} pips
 HTF CONTEXT: ${htfContext || 'Not provided'}
 `
 
-  const message = await anthropic.messages.create({
+  const message = await getClient().messages.create({
     model:      'claude-opus-4-8',
     max_tokens: 1024,
     system:     SMC_SYSTEM_PROMPT,
@@ -94,29 +100,23 @@ Respond with a JSON object with these exact keys:
   if (content.type !== 'text') throw new Error('Unexpected AI response type')
 
   try {
-    // Extract JSON from response (Claude sometimes wraps in ```json)
     const jsonMatch = content.text.match(/\{[\s\S]*\}/)
     if (!jsonMatch) throw new Error('No JSON found in AI response')
     return JSON.parse(jsonMatch[0]) as AISignalAnalysis
   } catch {
-    // Fallback if JSON parse fails
     return {
       analysis_text:     content.text.slice(0, 500),
       entry_narrative:   `${smc.direction?.toUpperCase()} setup confirmed on ${timeframe} with ${smc.confluence_score}/10 confluence.`,
       risk_warning:      'Monitor price action closely. Invalidate if price closes beyond SL zone.',
       confidence_score:  smc.confluence_score,
       confidence_reason: `${smc.smc_patterns.length} SMC patterns detected with ${smc.signal_quality} quality rating.`,
-      invalidation:      `Close beyond ${smc.direction === 'buy' ? smc.stop_loss?.toFixed(5) : smc.stop_loss?.toFixed(5)}.`,
+      invalidation:      `Close beyond ${smc.stop_loss?.toFixed(5) ?? 'SL level'}.`,
       pair_sentiment:    `${pair} showing ${smc.bias} structure on ${timeframe}.`,
     }
   }
 }
 
-// ─── Economic News Context ────────────────────────────────────────────────────
-
 export async function getNewsContext(pair: string): Promise<string> {
-  // In production this would query a news API (e.g., Forex Factory, ForexLive)
-  // For now returns a placeholder that the AI will handle gracefully
   const currencies = pair.slice(0, 3) + ' and ' + pair.slice(3, 6)
   return `No high-impact events scheduled for ${currencies} in the next 4 hours.`
 }

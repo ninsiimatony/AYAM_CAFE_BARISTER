@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
     const tier = profile?.subscription_tier ?? 'free'
     const tierRank = { free: 0, pro: 1, elite: 2 } as const
 
-    if (needsElite && tierRank[tier as keyof typeof tierRank] < 3) {
+    if (needsElite && tierRank[tier as keyof typeof tierRank] < 2) {
       return NextResponse.redirect(new URL('/pricing?upgrade=elite', request.url))
     }
     if (needsPro && tierRank[tier as keyof typeof tierRank] < 1) {
