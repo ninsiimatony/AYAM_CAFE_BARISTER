@@ -125,7 +125,7 @@ export default async function AdminPage() {
         <h2 className="font-semibold text-coffee-900 dark:text-cream-100 mb-4">System Information</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { label: 'Application', value: 'Ayam Café Barister v1.0' },
+            { label: 'Application', value: 'TONY ELITE AI v1.0' },
             { label: 'Auth Provider', value: 'Supabase Auth' },
             { label: 'Framework', value: 'Next.js 14 (App Router)' },
             { label: 'Database', value: 'Supabase PostgreSQL' },

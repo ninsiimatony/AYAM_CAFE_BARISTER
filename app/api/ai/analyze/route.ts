@@ -20,22 +20,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Elite subscription required' }, { status: 403 })
   }
 
-  const body = await req.json()
-  const {
-    candles,
-    pair,
-    timeframe,
-    htf_bias = 'neutral',
-    high_impact_news = false,
-    htf_context = '',
-  }: {
-    candles:          Candle[]
-    pair:             string
-    timeframe:        SignalTimeframe
-    htf_bias?:        MarketBias
-    high_impact_news?: boolean
-    htf_context?:     string
-  } = body
+  let body: Record<string, unknown>
+  try { body = await req.json() } catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }) }
+
+  const candles          = body.candles          as Candle[]
+  const pair             = body.pair             as string
+  const timeframe        = body.timeframe        as SignalTimeframe
+  const htf_bias         = (body.htf_bias        as MarketBias | undefined) ?? 'neutral'
+  const high_impact_news = (body.high_impact_news as boolean | undefined) ?? false
+  const htf_context      = (body.htf_context     as string | undefined) ?? ''
 
   if (!candles || !Array.isArray(candles) || candles.length < 20) {
     return NextResponse.json({ error: 'Need at least 20 candles' }, { status: 400 })

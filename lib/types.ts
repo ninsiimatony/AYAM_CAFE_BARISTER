@@ -379,7 +379,6 @@ export interface PlanConfig {
   tier: SubscriptionTier
   name: string
   price: number           // USD/month
-  stripePriceId: string
   trialDays: number
   features: string[]
   signalAccess: SubscriptionTier[]
@@ -394,7 +393,6 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     tier: 'free',
     name: 'Free',
     price: 0,
-    stripePriceId: '',
     trialDays: 0,
     features: [
       'Up to 3 free signals per week',
@@ -413,7 +411,6 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     tier: 'pro',
     name: 'Pro',
     price: 29,
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? '',
     trialDays: 7,
     features: [
       'Unlimited Pro + Free signals',
@@ -434,7 +431,6 @@ export const PLAN_CONFIGS: Record<SubscriptionTier, PlanConfig> = {
     tier: 'elite',
     name: 'Elite',
     price: 99,
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_ELITE_PRICE_ID ?? '',
     trialDays: 7,
     features: [
       'Everything in Pro',
