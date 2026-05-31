@@ -10,6 +10,16 @@ export const metadata: Metadata = {
   },
   description: 'AI-powered Smart Money Concepts signals, risk management, and MT5 auto-execution for serious traders.',
   keywords: ['forex', 'trading', 'SMC', 'signals', 'gold', 'XAUUSD', 'institutional'],
+  applicationName: 'TONY ELITE AI',
+  authors: [{ name: 'Tony Elite AI' }],
+  themeColor: '#0a0f1e',
+  colorScheme: 'dark',
+  openGraph: {
+    title: 'TONY ELITE AI — Institutional Forex Platform',
+    description: 'AI-powered SMC signals, risk management, and MT5 auto-execution.',
+    siteName: 'TONY ELITE AI',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({
