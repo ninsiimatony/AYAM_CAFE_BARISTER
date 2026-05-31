@@ -28,10 +28,19 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     setLoading(true)
-    const { error } = await createClient().auth.signInWithPassword({ email, password })
-    if (error) { setError(error.message); setLoading(false); return }
-    router.push(redirectTo)
-    router.refresh()
+    try {
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Request timed out. Please try again.')), 15000)
+      )
+      const authCall = createClient().auth.signInWithPassword({ email, password })
+      const { error } = await Promise.race([authCall, timeout]) as Awaited<typeof authCall>
+      if (error) { setError(error.message); setLoading(false); return }
+      router.push(redirectTo)
+      router.refresh()
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      setLoading(false)
+    }
   }
 
   return (
