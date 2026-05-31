@@ -22,6 +22,7 @@ function RoleChip({ role }: { role: string }) {
 }
 
 export default async function AdminPage() {
+  try {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -162,4 +163,8 @@ export default async function AdminPage() {
       </div>
     </div>
   )
+  } catch (e) {
+    if (isRedirectError(e)) throw e
+    redirect('/login')
+  }
 }
