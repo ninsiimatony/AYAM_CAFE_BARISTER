@@ -75,7 +75,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Avatar card */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5 flex items-center gap-4">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5 flex items-center gap-4">
         <div className="h-14 w-14 shrink-0 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-white text-lg font-bold">
           {initials}
         </div>
@@ -89,7 +89,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Personal info */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5">
         <h2 className="text-[13px] font-semibold text-white tracking-wide mb-4">Personal Information</h2>
 
         {message && (
@@ -110,7 +110,7 @@ export default function ProfilePage() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Your full name"
-              className="w-full rounded-lg border border-white/[0.08] bg-[#080b12] px-4 py-2.5 text-sm text-white placeholder-gray-700 focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+              className="w-full rounded-lg border border-white/[0.08] bg-[#080d18] px-4 py-2.5 text-sm text-white placeholder-gray-700 focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
             />
           </div>
           <div>
@@ -118,13 +118,13 @@ export default function ProfilePage() {
             <input
               value={user?.email ?? ''}
               disabled
-              className="w-full rounded-lg border border-white/[0.04] bg-[#080b12] px-4 py-2.5 text-sm text-gray-700 cursor-not-allowed"
+              className="w-full rounded-lg border border-white/[0.04] bg-[#080d18] px-4 py-2.5 text-sm text-gray-700 cursor-not-allowed"
             />
             <p className="text-xs text-gray-700 mt-1">Email cannot be changed here.</p>
           </div>
           <div>
             <label className="text-sm font-medium text-gray-500 block mb-1.5">Role</label>
-            <div className="flex items-center gap-3 rounded-lg border border-white/[0.04] bg-[#080b12] px-4 py-2.5">
+            <div className="flex items-center gap-3 rounded-lg border border-white/[0.04] bg-[#080d18] px-4 py-2.5">
               <span className={`inline-flex items-center rounded border px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest ${roleCfg.bg} ${roleCfg.color}`}>
                 {roleCfg.label}
               </span>
@@ -143,7 +143,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Change password */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5">
         <h2 className="text-[13px] font-semibold text-white tracking-wide mb-4">Change Password</h2>
 
         {pwMessage && (
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                 onChange={(e) => setter(e.target.value)}
                 placeholder="Min. 8 characters"
                 autoComplete={ac}
-                className="w-full rounded-lg border border-white/[0.08] bg-[#080b12] px-4 py-2.5 text-sm text-white placeholder-gray-700 focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
+                className="w-full rounded-lg border border-white/[0.08] bg-[#080d18] px-4 py-2.5 text-sm text-white placeholder-gray-700 focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20 outline-none transition-all"
               />
             </div>
           ))}
@@ -185,7 +185,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Account details */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5">
         <h2 className="text-[13px] font-semibold text-white tracking-wide mb-4">Account Details</h2>
         <div className="space-y-2">
           {[

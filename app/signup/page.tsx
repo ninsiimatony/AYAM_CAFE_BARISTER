@@ -60,7 +60,7 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#050709] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-6">
         <div className="w-full max-w-sm text-center">
           <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-6">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
@@ -80,7 +80,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050709] flex items-center justify-center p-6 py-12">
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-6 py-12">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex items-center gap-2.5 mb-8">

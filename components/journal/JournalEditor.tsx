@@ -74,10 +74,10 @@ export default function JournalEditor() {
     }
   }
 
-  const inputClass = 'w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
+  const inputClass = 'w-full rounded-xl bg-[#111d2e] border border-white/[0.09] px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
   const labelClass = 'block text-xs font-medium text-gray-400 mb-1.5'
   const toggleClass = (active: boolean) =>
-    `rounded-lg px-2.5 py-1.5 text-xs font-medium cursor-pointer transition-colors ${active ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`
+    `rounded-lg px-2.5 py-1.5 text-xs font-medium cursor-pointer transition-colors ${active ? 'bg-blue-600 text-white' : 'bg-[#111d2e] text-gray-400 hover:bg-gray-700'}`
 
   return (
     <div className="space-y-5">
@@ -237,7 +237,7 @@ export default function JournalEditor() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+    <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{title}</h2>
       {children}
     </div>

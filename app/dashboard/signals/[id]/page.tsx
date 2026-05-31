@@ -15,15 +15,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const STATUS_CONFIG = {
-  pending:   { label: 'Pending',     color: 'text-gray-400',    bg: 'bg-gray-800' },
+  pending:   { label: 'Pending',     color: 'text-gray-400',    bg: 'bg-[#111d2e]' },
   active:    { label: 'Active',      color: 'text-green-400',   bg: 'bg-green-900/40' },
   tp1_hit:   { label: 'TP1 Hit',    color: 'text-blue-400',    bg: 'bg-blue-900/40' },
   tp2_hit:   { label: 'TP2 Hit',    color: 'text-blue-300',    bg: 'bg-blue-900/50' },
   tp3_hit:   { label: 'Full TP',    color: 'text-emerald-400', bg: 'bg-emerald-900/40' },
   sl_hit:    { label: 'SL Hit',     color: 'text-red-400',     bg: 'bg-red-900/40' },
   be_hit:    { label: 'Break-even', color: 'text-yellow-400',  bg: 'bg-yellow-900/40' },
-  cancelled: { label: 'Cancelled',  color: 'text-gray-500',    bg: 'bg-gray-800' },
-  expired:   { label: 'Expired',    color: 'text-gray-500',    bg: 'bg-gray-800' },
+  cancelled: { label: 'Cancelled',  color: 'text-gray-500',    bg: 'bg-[#111d2e]' },
+  expired:   { label: 'Expired',    color: 'text-gray-500',    bg: 'bg-[#111d2e]' },
 } as const
 
 export default async function SignalDetailPage({ params }: Props) {
@@ -95,7 +95,7 @@ export default async function SignalDetailPage({ params }: Props) {
       )}
 
       {/* Price levels */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6">
         <h2 className="text-sm font-semibold text-gray-400 mb-4 uppercase tracking-wider">Price Levels</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <PriceBox label="Entry Zone" value={`${signal.entry_zone_low?.toFixed(5)} – ${signal.entry_zone_high?.toFixed(5)}`} />
@@ -114,7 +114,7 @@ export default async function SignalDetailPage({ params }: Props) {
       </div>
 
       {/* SMC context */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">SMC Context</h2>
         <div className="flex flex-wrap gap-2">
           {signal.smc_patterns?.map((p) => (
@@ -143,7 +143,7 @@ export default async function SignalDetailPage({ params }: Props) {
 
       {/* AI Analysis */}
       {hasAccess && signal.analysis_text && (
-        <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-3">
+        <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-3">
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 rounded-full bg-blue-500" />
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">AI Analysis</h2>
@@ -154,7 +154,7 @@ export default async function SignalDetailPage({ params }: Props) {
 
       {/* Notes */}
       {isStaff && signal.notes && (
-        <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6">
+        <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Staff Notes</h2>
           <p className="text-sm text-gray-300 whitespace-pre-wrap">{signal.notes}</p>
         </div>
@@ -162,8 +162,8 @@ export default async function SignalDetailPage({ params }: Props) {
 
       {/* Result events */}
       {results.length > 0 && (
-        <div className="rounded-2xl bg-gray-900 border border-gray-800 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-800">
+        <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] overflow-hidden">
+          <div className="px-6 py-4 border-b border-white/[0.07]">
             <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Signal Events</h2>
           </div>
           <div className="divide-y divide-gray-800">
@@ -205,7 +205,7 @@ export default async function SignalDetailPage({ params }: Props) {
 
 function PriceBox({ label, value, sub, accent }: { label: string; value?: string | null; sub?: string; accent?: 'red' | 'green' }) {
   const color = accent === 'red' ? 'text-red-300' : accent === 'green' ? 'text-emerald-300' : 'text-gray-200'
-  const bg    = accent === 'red' ? 'bg-red-900/20' : accent === 'green' ? 'bg-emerald-900/20' : 'bg-gray-800/60'
+  const bg    = accent === 'red' ? 'bg-red-900/20' : accent === 'green' ? 'bg-emerald-900/20' : 'bg-white/[0.05]'
   return (
     <div className={`rounded-xl ${bg} px-3 py-2.5`}>
       <p className="text-[10px] text-gray-500 mb-0.5">{label}</p>

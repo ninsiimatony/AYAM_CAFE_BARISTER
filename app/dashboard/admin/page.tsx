@@ -79,7 +79,7 @@ export default async function AdminPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {(Object.entries(roleCount) as [string, number][]).map(([role, count]) => (
-          <div key={role} className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-4">
+          <div key={role} className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-4">
             <p className="text-[10px] font-semibold text-gray-700 uppercase tracking-widest mb-2">{role}s</p>
             <p className="text-2xl font-bold text-white tabular-nums">{count}</p>
           </div>
@@ -87,7 +87,7 @@ export default async function AdminPage() {
       </div>
 
       {/* Users table */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] overflow-hidden">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
           <h2 className="text-[13px] font-semibold text-white tracking-wide">All Users</h2>
           <span className="text-[11px] text-gray-600">{allUsers?.length ?? 0} total</span>
@@ -143,7 +143,7 @@ export default async function AdminPage() {
       </div>
 
       {/* System info */}
-      <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5">
+      <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5">
         <h2 className="text-[13px] font-semibold text-white tracking-wide mb-4">System Information</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[

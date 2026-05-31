@@ -19,8 +19,8 @@ const STATUS_CONFIG = {
   tp3_hit:  { label: 'Full TP',   color: 'bg-emerald-900/50 text-emerald-300',      dot: 'bg-emerald-400' },
   sl_hit:   { label: 'SL Hit',    color: 'bg-red-900/50 text-red-300',             dot: 'bg-red-400' },
   be_hit:   { label: 'Break-even', color: 'bg-yellow-900/50 text-yellow-300',       dot: 'bg-yellow-400' },
-  cancelled:{ label: 'Cancelled', color: 'bg-gray-800 text-gray-500',               dot: 'bg-gray-600' },
-  expired:  { label: 'Expired',   color: 'bg-gray-800 text-gray-500',               dot: 'bg-gray-600' },
+  cancelled:{ label: 'Cancelled', color: 'bg-[#111d2e] text-gray-500',               dot: 'bg-gray-600' },
+  expired:  { label: 'Expired',   color: 'bg-[#111d2e] text-gray-500',               dot: 'bg-gray-600' },
 } as const
 
 const TIER_BADGE = {
@@ -62,13 +62,13 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
       <div className={`
         relative overflow-hidden rounded-2xl border transition-all duration-200
         ${hasAccess
-          ? 'bg-gray-900 border-gray-700 hover:border-blue-600/50 hover:shadow-lg hover:shadow-blue-900/10'
-          : 'bg-gray-900/50 border-gray-800 cursor-not-allowed'
+          ? 'bg-[#0d1520] border-white/[0.09] hover:border-blue-600/50 hover:shadow-lg hover:shadow-blue-900/10'
+          : 'bg-[#0d1520]/50 border-white/[0.07] cursor-not-allowed'
         }
       `}>
         {/* Locked overlay */}
         {!hasAccess && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-2xl bg-gray-950/80 backdrop-blur-sm">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-2xl bg-[#0a0f1e]/80 backdrop-blur-sm">
             <svg className="h-8 w-8 text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -103,7 +103,7 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
 
           {/* Levels grid */}
           <div className="grid grid-cols-3 gap-2 mb-3">
-            <div className="rounded-lg bg-gray-800/60 px-2.5 py-2">
+            <div className="rounded-lg bg-white/[0.05] px-2.5 py-2">
               <p className="text-[10px] text-gray-500 mb-0.5">Entry</p>
               <p className="text-xs font-mono font-semibold text-gray-200">{signal.entry_zone_low?.toFixed(4)}</p>
             </div>
@@ -126,7 +126,7 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
                 </span>
               ))}
               {signal.smc_patterns.length > 3 && (
-                <span className="rounded-md bg-gray-800 px-1.5 py-0.5 text-[10px] text-gray-500">
+                <span className="rounded-md bg-[#111d2e] px-1.5 py-0.5 text-[10px] text-gray-500">
                   +{signal.smc_patterns.length - 3}
                 </span>
               )}
@@ -134,7 +134,7 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
           )}
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-2 border-t border-gray-800">
+          <div className="flex items-center justify-between pt-2 border-t border-white/[0.07]">
             <div className="flex items-center gap-3 text-xs text-gray-500">
               <span>{signal.timeframe}</span>
               {signal.session && <span className="capitalize">{signal.session.replace('_', '/')}</span>}

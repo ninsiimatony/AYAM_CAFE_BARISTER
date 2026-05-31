@@ -31,7 +31,7 @@ export default function LivePrice() {
   const Icon  = dir > 0 ? TrendingUp : dir < 0 ? TrendingDown : Minus
 
   return (
-    <div className="flex items-center gap-2 rounded-xl bg-gray-800/60 border border-gray-700 px-4 py-2.5">
+    <div className="flex items-center gap-2 rounded-xl bg-white/[0.05] border border-white/[0.09] px-4 py-2.5">
       <div>
         <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">XAUUSD</p>
         {loading ? (

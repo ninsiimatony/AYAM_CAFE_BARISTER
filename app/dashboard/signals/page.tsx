@@ -56,7 +56,7 @@ export default async function SignalsPage() {
       {perf && perf.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {perf.map((p) => (
-            <div key={p.pair} className="rounded-xl bg-gray-800/60 border border-gray-700 px-4 py-3">
+            <div key={p.pair} className="rounded-xl bg-white/[0.05] border border-white/[0.09] px-4 py-3">
               <p className="text-xs text-gray-400 mb-1">{p.pair}</p>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-base font-bold text-white">{Number(p.win_rate_pct ?? 0).toFixed(0)}%</span>

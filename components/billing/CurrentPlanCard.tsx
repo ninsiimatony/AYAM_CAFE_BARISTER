@@ -15,7 +15,7 @@ export default function CurrentPlanCard({ profile, subscription }: Props) {
     active:   { label: 'Active',       color: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' },
     trialing: { label: 'Trial',        color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
     past_due: { label: 'Payment Due',  color: 'bg-red-100 text-red-600 dark:bg-red-900/40 dark:text-red-300' },
-    cancelled:{ label: 'Cancelled',    color: 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400' },
+    cancelled:{ label: 'Cancelled',    color: 'bg-gray-100 text-gray-500 dark:bg-[#111d2e] dark:text-gray-400' },
     paused:   { label: 'Paused',       color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300' },
     incomplete:{ label: 'Incomplete',  color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300' },
     incomplete_expired:{ label: 'Expired', color: 'bg-gray-100 text-gray-500' },
@@ -45,7 +45,7 @@ export default function CurrentPlanCard({ profile, subscription }: Props) {
   const tierIcon   = { free: '🔓', pro: '⚡', elite: '👑' }
 
   return (
-    <div className={`rounded-2xl border-2 ${tierBorder[tier]} bg-white dark:bg-gray-900 p-6`}>
+    <div className={`rounded-2xl border-2 ${tierBorder[tier]} bg-white dark:bg-[#0d1520] p-6`}>
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -72,7 +72,7 @@ export default function CurrentPlanCard({ profile, subscription }: Props) {
       </div>
 
       {/* Billing info */}
-      <div className="grid grid-cols-2 gap-4 rounded-xl bg-gray-50 dark:bg-gray-800 p-4 mb-5">
+      <div className="grid grid-cols-2 gap-4 rounded-xl bg-gray-50 dark:bg-[#111d2e] p-4 mb-5">
         {status === 'trialing' && trialEnd && (
           <>
             <div>

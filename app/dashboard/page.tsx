@@ -80,7 +80,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         {/* Live signals */}
-        <div className="lg:col-span-2 rounded-xl bg-[#0d1117] border border-white/[0.07] overflow-hidden">
+        <div className="lg:col-span-2 rounded-xl bg-[#0d1520] border border-white/[0.07] overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Quick actions */}
-        <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-5">
+        <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-5">
           <h2 className="text-[13px] font-semibold text-white tracking-wide mb-3">Quick Actions</h2>
           <div className="space-y-1.5">
             {[
@@ -183,7 +183,7 @@ function KpiCard({ label, value, suffix, color }: {
 }) {
   const empty = value === null
   return (
-    <div className="rounded-xl bg-[#0d1117] border border-white/[0.07] p-4">
+    <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-4">
       <p className="text-[10px] font-semibold text-gray-700 uppercase tracking-widest mb-2">{label}</p>
       {empty ? (
         <p className="text-lg font-bold text-gray-800">—</p>

@@ -30,12 +30,12 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-gray-800 bg-gray-950/95 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-[#0a0f1e]/95 backdrop-blur-sm">
         <div className="flex h-14 items-center justify-between px-4 lg:px-6">
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+            className="md:hidden flex items-center justify-center h-10 w-10 rounded-lg text-gray-400 hover:text-white hover:bg-[#111d2e] transition-colors"
             aria-label="Open navigation"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ function UserMenu({ initials, name, email, onSignOut }: { initials: string; name
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-gray-800 transition-colors"
+        className="flex items-center gap-2 rounded-xl px-2 py-1.5 hover:bg-[#111d2e] transition-colors"
       >
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white text-xs font-bold flex-shrink-0">
           {initials}
@@ -99,22 +99,22 @@ function UserMenu({ initials, name, email, onSignOut }: { initials: string; name
       {open && (
         <>
           <div className="fixed inset-0 z-30" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-gray-800 bg-gray-900 shadow-2xl py-2 z-40">
+          <div className="absolute right-0 mt-2 w-48 rounded-2xl border border-white/[0.07] bg-[#0d1520] shadow-2xl py-2 z-40">
             <Link href="/dashboard/profile" onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-[#111d2e] hover:text-white transition-colors">
               <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               Profile
             </Link>
             <Link href="/dashboard/billing" onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-300 hover:bg-[#111d2e] hover:text-white transition-colors">
               <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg>
               Billing
             </Link>
-            <div className="my-1.5 border-t border-gray-800" />
+            <div className="my-1.5 border-t border-white/[0.07]" />
             <button onClick={onSignOut}
               className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 transition-colors">
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,7 +37,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className="w-full rounded-xl border border-gray-700 bg-gray-800 px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+      className="w-full rounded-xl border border-white/[0.09] bg-[#111d2e] px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
     />
   )
 }
@@ -46,7 +46,7 @@ function Select({ children, ...props }: React.SelectHTMLAttributes<HTMLSelectEle
   return (
     <select
       {...props}
-      className="w-full rounded-xl border border-gray-700 bg-gray-800 px-3 py-2.5 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+      className="w-full rounded-xl border border-white/[0.09] bg-[#111d2e] px-3 py-2.5 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
     >
       {children}
     </select>
@@ -57,7 +57,7 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}
-      className="w-full rounded-xl border border-gray-700 bg-gray-800 px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+      className="w-full rounded-xl border border-white/[0.09] bg-[#111d2e] px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
     />
   )
 }
@@ -149,7 +149,7 @@ export default function NewSignalForm() {
       )}
 
       {/* Core fields */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
         <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">Signal Details</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -195,7 +195,7 @@ export default function NewSignalForm() {
       </div>
 
       {/* Price levels */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
         <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">Price Levels</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -246,7 +246,7 @@ export default function NewSignalForm() {
       </div>
 
       {/* SMC patterns */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-3">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-3">
         <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">SMC Patterns</h2>
         <div className="flex flex-wrap gap-2">
           {SMC_PATTERNS.map(({ value, label }) => (
@@ -257,7 +257,7 @@ export default function NewSignalForm() {
               className={`rounded-xl px-3 py-1.5 text-xs font-medium transition-colors ${
                 patterns.includes(value)
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700 border border-gray-700'
+                  : 'bg-[#111d2e] text-gray-400 hover:bg-gray-700 border border-white/[0.09]'
               }`}
             >
               {label}
@@ -270,7 +270,7 @@ export default function NewSignalForm() {
       </div>
 
       {/* Analysis */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
         <h2 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">Analysis</h2>
         <Field label="Analysis Text">
           <Textarea value={analysisText} onChange={(e) => setAnalysisText(e.target.value)} rows={5} placeholder="Institutional analysis — explain the WHY behind this setup..." />
@@ -294,7 +294,7 @@ export default function NewSignalForm() {
         <button
           type="button"
           onClick={() => router.back()}
-          className="rounded-xl border border-gray-700 bg-gray-800 hover:bg-gray-700 px-6 py-3 text-sm font-medium text-gray-300 transition-colors"
+          className="rounded-xl border border-white/[0.09] bg-[#111d2e] hover:bg-gray-700 px-6 py-3 text-sm font-medium text-gray-300 transition-colors"
         >
           Cancel
         </button>

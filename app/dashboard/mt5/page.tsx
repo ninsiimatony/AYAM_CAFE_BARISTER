@@ -42,7 +42,7 @@ export default async function Mt5Page() {
       </UpgradeGate>
 
       {tier === 'elite' && (
-        <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6">
+        <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">MT5 Integration Features</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
@@ -53,7 +53,7 @@ export default async function Mt5Page() {
               { icon: '🎯', title: 'Partial TP Management',   desc: 'Automatic partial close at TP1' },
               { icon: '🛡️', title: 'Break-Even Auto Move',    desc: 'SL moved to entry when TP1 is hit' },
             ].map((item) => (
-              <div key={item.title} className="flex items-start gap-3 rounded-xl bg-gray-800/40 p-3">
+              <div key={item.title} className="flex items-start gap-3 rounded-xl bg-white/[0.04] p-3">
                 <span className="text-lg">{item.icon}</span>
                 <div>
                   <p className="text-sm font-semibold text-white">{item.title}</p>

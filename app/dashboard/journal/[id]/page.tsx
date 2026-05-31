@@ -133,7 +133,7 @@ export default async function JournalDetailPage({ params }: Props) {
       {e.tags && e.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {e.tags.map((t) => (
-            <span key={t} className="rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-400">#{t}</span>
+            <span key={t} className="rounded-full bg-[#111d2e] px-3 py-1 text-xs text-gray-400">#{t}</span>
           ))}
         </div>
       )}
@@ -147,7 +147,7 @@ export default async function JournalDetailPage({ params }: Props) {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+    <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{title}</h2>
       {children}
     </div>
@@ -156,7 +156,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 function InfoBox({ label, value, warn, good, className }: { label: string; value: string; warn?: boolean; good?: boolean; className?: string }) {
   return (
-    <div className="rounded-xl bg-gray-800/60 px-3 py-2.5">
+    <div className="rounded-xl bg-white/[0.05] px-3 py-2.5">
       <p className="text-[10px] text-gray-500 mb-0.5">{label}</p>
       <p className={`text-sm font-medium capitalize ${warn ? 'text-amber-400' : good ? 'text-emerald-400' : className ?? 'text-gray-200'}`}>{value}</p>
     </div>

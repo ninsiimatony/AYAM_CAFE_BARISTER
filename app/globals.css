@@ -12,7 +12,7 @@
   }
 
   body {
-    @apply bg-[#050709] text-gray-200 antialiased;
+    @apply bg-[#0a0f1e] text-gray-200 antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 

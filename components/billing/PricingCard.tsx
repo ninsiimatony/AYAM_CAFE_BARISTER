@@ -42,13 +42,13 @@ export default function PricingCard({ tier, currentTier = 'free', isAuthenticate
   }
 
   const tierColors = {
-    free:  'border-gray-200 dark:border-gray-700',
+    free:  'border-gray-200 dark:border-white/[0.09]',
     pro:   'border-blue-400 dark:border-blue-500',
     elite: 'border-amber-400 dark:border-amber-500',
   }
 
   const badgeColors = {
-    free:  'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300',
+    free:  'bg-gray-100 text-gray-600 dark:bg-[#111d2e] dark:text-gray-300',
     pro:   'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
     elite: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
   }
@@ -70,7 +70,7 @@ export default function PricingCard({ tier, currentTier = 'free', isAuthenticate
   return (
     <div
       className={`
-        relative flex flex-col rounded-2xl border-2 bg-white dark:bg-gray-900 p-8 transition-all
+        relative flex flex-col rounded-2xl border-2 bg-white dark:bg-[#0d1520] p-8 transition-all
         ${tierColors[tier]}
         ${highlight ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-950 scale-105' : ''}
       `}

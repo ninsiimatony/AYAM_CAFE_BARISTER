@@ -34,7 +34,7 @@ export default function TelegramConnect({ account, tier }: Props) {
 
   if (account?.is_verified) {
     return (
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-4">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-4">
         {/* Connected status */}
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xl">
@@ -52,13 +52,13 @@ export default function TelegramConnect({ account, tier }: Props) {
 
         {/* Channel access */}
         <div className="grid grid-cols-2 gap-3">
-          <div className={`rounded-xl p-3 border ${account.pro_channel_member ? 'border-blue-700/50 bg-blue-900/20' : 'border-gray-700 bg-gray-800/40'}`}>
+          <div className={`rounded-xl p-3 border ${account.pro_channel_member ? 'border-blue-700/50 bg-blue-900/20' : 'border-white/[0.09] bg-white/[0.04]'}`}>
             <p className="text-xs text-gray-400 mb-0.5">Pro Channel</p>
             <p className={`text-sm font-semibold ${account.pro_channel_member ? 'text-blue-300' : 'text-gray-500'}`}>
               {account.pro_channel_member ? '✓ Joined' : '✗ Not joined'}
             </p>
           </div>
-          <div className={`rounded-xl p-3 border ${account.elite_channel_member ? 'border-amber-700/50 bg-amber-900/20' : 'border-gray-700 bg-gray-800/40'}`}>
+          <div className={`rounded-xl p-3 border ${account.elite_channel_member ? 'border-amber-700/50 bg-amber-900/20' : 'border-white/[0.09] bg-white/[0.04]'}`}>
             <p className="text-xs text-gray-400 mb-0.5">Elite Channel</p>
             <p className={`text-sm font-semibold ${account.elite_channel_member ? 'text-amber-300' : 'text-gray-500'}`}>
               {account.elite_channel_member ? '✓ Joined' : (tier === 'elite' ? 'Invite pending' : '✗ Not eligible')}
@@ -67,7 +67,7 @@ export default function TelegramConnect({ account, tier }: Props) {
         </div>
 
         {/* Notification prefs */}
-        <div className="rounded-xl bg-gray-800/60 p-4">
+        <div className="rounded-xl bg-white/[0.05] p-4">
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Notifications Active</p>
           <div className="flex flex-wrap gap-2">
             {account.signal_notifications && <Badge label="Signal Alerts" />}
@@ -84,9 +84,9 @@ export default function TelegramConnect({ account, tier }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-5">
+    <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-5">
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 rounded-full bg-gray-800 flex items-center justify-center text-xl shrink-0">✈</div>
+        <div className="h-10 w-10 rounded-full bg-[#111d2e] flex items-center justify-center text-xl shrink-0">✈</div>
         <div>
           <p className="font-semibold text-white">Connect Telegram</p>
           <p className="text-xs text-gray-400 mt-0.5">Link your Telegram account to get instant signal alerts</p>
@@ -95,7 +95,7 @@ export default function TelegramConnect({ account, tier }: Props) {
 
       {!token ? (
         <div className="space-y-3">
-          <div className="rounded-xl bg-gray-800/60 p-4 text-sm text-gray-300 space-y-2">
+          <div className="rounded-xl bg-white/[0.05] p-4 text-sm text-gray-300 space-y-2">
             <p className="font-medium text-white text-xs uppercase tracking-wider mb-2">How to connect</p>
             <p className="text-xs text-gray-400">1. Click "Generate Link Token" below</p>
             <p className="text-xs text-gray-400">2. Open the Tony AI bot in Telegram</p>
@@ -115,7 +115,7 @@ export default function TelegramConnect({ account, tier }: Props) {
           <div className="rounded-xl bg-emerald-900/20 border border-emerald-800/40 p-4">
             <p className="text-xs text-emerald-400 font-medium mb-2">Token generated — expires in 15 minutes</p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 rounded-lg bg-gray-800 px-3 py-2 text-sm font-mono text-white break-all">{token}</code>
+              <code className="flex-1 rounded-lg bg-[#111d2e] px-3 py-2 text-sm font-mono text-white break-all">{token}</code>
               <button
                 onClick={copyToken}
                 className="shrink-0 rounded-lg bg-gray-700 hover:bg-gray-600 px-3 py-2 text-xs text-gray-300 transition-colors"

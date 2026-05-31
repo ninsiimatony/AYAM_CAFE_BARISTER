@@ -98,7 +98,7 @@ export default async function BillingPage({
       )}
 
       {/* Cancellation info */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-5">
+      <div className="rounded-xl border border-gray-200 dark:border-white/[0.09] bg-gray-50 dark:bg-[#111d2e]/50 p-5">
         <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Need to cancel?</h3>
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
           You can cancel your subscription at any time from the billing portal. You keep access until the end of your current billing period.
@@ -120,7 +120,7 @@ function UsageLimitsCard({ currentTier }: { currentTier: SubscriptionTier }) {
   const l = limits[currentTier]
 
   return (
-    <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6">
+    <div className="rounded-2xl border border-gray-200 dark:border-white/[0.09] bg-white dark:bg-[#0d1520] p-6">
       <h2 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Your Usage & Limits</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {[
@@ -131,7 +131,7 @@ function UsageLimitsCard({ currentTier }: { currentTier: SubscriptionTier }) {
           { label: 'MT5 integration',   value: l.mt5 },
           { label: 'AI SMC engine',     value: l.ai },
         ].map((item) => (
-          <div key={item.label} className="rounded-xl bg-gray-50 dark:bg-gray-800 p-3.5">
+          <div key={item.label} className="rounded-xl bg-gray-50 dark:bg-[#111d2e] p-3.5">
             <p className="text-xs text-gray-400 mb-1">{item.label}</p>
             <p className={`text-sm font-semibold ${item.value.startsWith('Not') ? 'text-gray-400' : 'text-gray-900 dark:text-white'}`}>
               {item.value}

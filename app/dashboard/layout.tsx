@@ -21,7 +21,7 @@ export default async function DashboardLayout({
 
   return (
     <AuthProvider>
-      <div className="flex h-screen flex-col overflow-hidden bg-gray-950">
+      <div className="flex h-screen flex-col overflow-hidden bg-[#0a0f1e]">
         <SubscriptionBanner />
         <Navbar />
         <div className="flex flex-1 overflow-hidden">

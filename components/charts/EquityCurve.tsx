@@ -25,7 +25,7 @@ export default function EquityCurve({ snapshots }: Props) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null
     return (
-      <div className="rounded-xl bg-gray-800 border border-gray-700 px-4 py-3 shadow-xl text-xs">
+      <div className="rounded-xl bg-[#111d2e] border border-white/[0.09] px-4 py-3 shadow-xl text-xs">
         <p className="font-semibold text-white mb-1">{label}</p>
         <p className="text-gray-300">Equity: <span className="text-white font-mono">${Number(payload[0].value).toFixed(2)}</span></p>
       </div>

@@ -51,7 +51,7 @@ export default async function JournalPage() {
             { label: 'Losses',     value: losses.toString(),                                      color: 'text-red-400' },
             { label: 'Avg Pips',   value: `${avgPips > 0 ? '+' : ''}${avgPips.toFixed(1)}`,      color: avgPips >= 0 ? 'text-emerald-400' : 'text-red-400' },
           ].map((s) => (
-            <div key={s.label} className="rounded-xl bg-gray-900 border border-gray-800 p-4">
+            <div key={s.label} className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-4">
               <p className="text-xs text-gray-500 mb-1">{s.label}</p>
               <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
             </div>

@@ -44,11 +44,11 @@ export default function RiskCalculator({ defaultRiskPct = 1 }: Props) {
     }
   }, [balance, riskPct, pair, entry, sl, tp1, tp2])
 
-  const inputClass = 'w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none font-mono'
+  const inputClass = 'w-full rounded-xl bg-[#111d2e] border border-white/[0.09] px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none font-mono'
   const labelClass = 'block text-xs font-medium text-gray-400 mb-1.5'
 
   return (
-    <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6 space-y-5">
+    <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6 space-y-5">
       <div className="grid grid-cols-2 gap-4">
         {/* Account balance */}
         <div>
@@ -172,7 +172,7 @@ export default function RiskCalculator({ defaultRiskPct = 1 }: Props) {
           </div>
 
           {/* Units */}
-          <div className="rounded-xl bg-gray-800/60 px-4 py-3 text-center">
+          <div className="rounded-xl bg-white/[0.05] px-4 py-3 text-center">
             <p className="text-xs text-gray-400 mb-0.5">Position in units</p>
             <p className="font-mono text-lg font-bold text-white">{result.units.toLocaleString()}</p>
             <p className="text-xs text-gray-500">at ${result.pip_value_usd.toFixed(2)} per pip</p>
@@ -192,7 +192,7 @@ function ResultBox({ label, value, sub, highlight, warn, good }: {
       highlight ? 'bg-blue-900/30 border-blue-700/50' :
       warn      ? 'bg-red-900/20 border-red-800/40'   :
       good      ? 'bg-emerald-900/20 border-emerald-800/40' :
-      'bg-gray-800/60 border-gray-700/50'
+      'bg-white/[0.05] border-white/[0.09]/50'
     }`}>
       <p className="text-[10px] text-gray-400 mb-0.5">{label}</p>
       <p className={`text-base font-bold font-mono ${

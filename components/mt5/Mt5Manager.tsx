@@ -11,7 +11,7 @@ const STATUS_COLOR = {
   connected:     'text-emerald-400 bg-emerald-900/30',
   connecting:    'text-yellow-400 bg-yellow-900/30',
   deploy_started:'text-blue-400 bg-blue-900/30',
-  disconnected:  'text-gray-400 bg-gray-800',
+  disconnected:  'text-gray-400 bg-[#111d2e]',
   error:         'text-red-400 bg-red-900/30',
 } as const
 
@@ -68,11 +68,11 @@ export default function Mt5Manager({ accounts: initialAccounts }: Props) {
     }
   }
 
-  const inputClass = 'w-full rounded-xl bg-gray-800 border border-gray-700 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
+  const inputClass = 'w-full rounded-xl bg-[#111d2e] border border-white/[0.09] px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none'
 
   return (
-    <div className="rounded-2xl bg-gray-900 border border-gray-800 overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+    <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] overflow-hidden">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.07]">
         <h2 className="text-base font-semibold text-white">Connected Accounts</h2>
         <button
           onClick={() => setShowForm(!showForm)}
@@ -83,7 +83,7 @@ export default function Mt5Manager({ accounts: initialAccounts }: Props) {
       </div>
 
       {showForm && (
-        <div className="border-b border-gray-800 p-6 space-y-4 bg-gray-800/30">
+        <div className="border-b border-white/[0.07] p-6 space-y-4 bg-[#111d2e]/30">
           <p className="text-sm font-semibold text-white">Add MT5 Account</p>
           {error && <p className="text-xs text-red-400">{error}</p>}
           <div className="grid grid-cols-2 gap-3">
@@ -146,7 +146,7 @@ export default function Mt5Manager({ accounts: initialAccounts }: Props) {
             const statusKey = acc.sync_status as keyof typeof STATUS_COLOR
             const statusColor = STATUS_COLOR[statusKey] ?? STATUS_COLOR.disconnected
             return (
-              <div key={acc.id} className="flex items-center justify-between p-5 hover:bg-gray-800/30 transition-colors">
+              <div key={acc.id} className="flex items-center justify-between p-5 hover:bg-[#111d2e]/30 transition-colors">
                 <div className="flex items-center gap-4">
                   <div className={`h-2.5 w-2.5 rounded-full ${acc.sync_status === 'connected' ? 'bg-emerald-400 animate-pulse' : acc.sync_status === 'error' ? 'bg-red-400' : 'bg-gray-500'}`} />
                   <div>

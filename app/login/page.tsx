@@ -129,7 +129,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-[#050709] flex">
+    <div className="min-h-screen bg-[#0a0f1e] flex">
       {/* Left — branding */}
       <div className="hidden lg:flex lg:w-[45%] flex-col justify-between p-12 border-r border-white/[0.05] relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-950/30 via-transparent to-transparent pointer-events-none" />

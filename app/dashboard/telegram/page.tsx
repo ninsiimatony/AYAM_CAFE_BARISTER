@@ -42,7 +42,7 @@ export default async function TelegramPage() {
       </UpgradeGate>
 
       {/* Feature overview */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6">
         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">What You Get</h2>
         <div className="space-y-3">
           {[
@@ -51,8 +51,8 @@ export default async function TelegramPage() {
           ].map((row) => (
             <div key={row.tier} className={`rounded-xl p-4 border ${
               tier === row.tier     ? 'border-blue-700/50 bg-blue-900/20' :
-              tier === 'elite' && row.tier === 'pro' ? 'border-gray-700 bg-gray-800/40' :
-              'border-gray-800 bg-gray-800/20 opacity-60'
+              tier === 'elite' && row.tier === 'pro' ? 'border-white/[0.09] bg-white/[0.04]' :
+              'border-white/[0.07] bg-[#111d2e]/20 opacity-60'
             }`}>
               <p className="text-sm font-semibold text-white mb-2">{row.label}</p>
               <ul className="space-y-1">

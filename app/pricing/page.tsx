@@ -30,10 +30,10 @@ export default async function PricingPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#0a0f1e]">
       {/* Cancelled banner */}
       {params.cancelled && (
-        <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 text-center text-sm text-gray-300">
+        <div className="bg-[#111d2e] border-b border-white/[0.09] px-4 py-3 text-center text-sm text-gray-300">
           No worries — your plan wasn't changed. Come back when you're ready.
         </div>
       )}
@@ -87,17 +87,17 @@ export default async function PricingPage({
         {/* Feature comparison table */}
         <div className="mt-20">
           <h2 className="text-2xl font-bold text-white text-center mb-10">Full Feature Comparison</h2>
-          <div className="overflow-x-auto rounded-2xl border border-gray-800">
+          <div className="overflow-x-auto rounded-2xl border border-white/[0.07]">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-800 bg-gray-900">
+                <tr className="border-b border-white/[0.07] bg-[#0d1520]">
                   <th className="py-4 px-6 text-left font-medium text-gray-400">Feature</th>
                   <th className="py-4 px-4 text-center font-medium text-gray-400">Free</th>
                   <th className="py-4 px-4 text-center font-semibold text-blue-400">Pro $29</th>
                   <th className="py-4 px-4 text-center font-semibold text-amber-400">Elite $99</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800 bg-gray-950">
+              <tbody className="divide-y divide-gray-800 bg-[#0a0f1e]">
                 {[
                   { feature: 'Forex signals per week',     free: 'Up to 3',      pro: 'Unlimited',     elite: 'Unlimited' },
                   { feature: 'Signal tier access',         free: 'Free only',    pro: 'Free + Pro',    elite: 'All tiers' },
@@ -114,7 +114,7 @@ export default async function PricingPage({
                   { feature: 'Auto TP/SL management',     free: '—',            pro: '—',             elite: '✓' },
                   { feature: 'Priority support',           free: '—',            pro: '—',             elite: '✓' },
                 ].map((row) => (
-                  <tr key={row.feature} className="hover:bg-gray-900/50 transition-colors">
+                  <tr key={row.feature} className="hover:bg-[#0d1520]/50 transition-colors">
                     <td className="py-3.5 px-6 text-gray-300">{row.feature}</td>
                     <td className="py-3.5 px-4 text-center text-gray-500">{row.free}</td>
                     <td className="py-3.5 px-4 text-center text-blue-300">{row.pro}</td>
@@ -152,7 +152,7 @@ export default async function PricingPage({
                 a: 'Elite signals are our highest-conviction setups — typically higher risk:reward, on major pairs, with full AI SMC analysis and chart annotations. Pro signals are strong setups suitable for all experience levels.',
               },
             ].map((item) => (
-              <details key={item.q} className="group rounded-xl border border-gray-800 bg-gray-900 px-6 py-4">
+              <details key={item.q} className="group rounded-xl border border-white/[0.07] bg-[#0d1520] px-6 py-4">
                 <summary className="flex cursor-pointer items-center justify-between font-medium text-white list-none">
                   {item.q}
                   <svg className="h-4 w-4 text-gray-400 transition-transform group-open:rotate-180 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -28,7 +28,7 @@ const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
             ref={ref}
             type={isPassword ? (showPassword ? 'text' : 'password') : type}
             className={`
-              w-full rounded-lg border bg-[#0d1117] px-4 py-2.5 text-white placeholder-gray-700
+              w-full rounded-lg border bg-[#0d1520] px-4 py-2.5 text-white placeholder-gray-700
               text-sm transition-all duration-200 outline-none
               ${icon ? 'pl-10' : ''}
               ${isPassword ? 'pr-10' : ''}

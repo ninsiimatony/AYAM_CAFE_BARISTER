@@ -54,7 +54,7 @@ export default function ResetPasswordPage() {
 
   if (validSession === null) {
     return (
-      <div className="min-h-screen bg-[#050709] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/10 border-t-blue-500" />
       </div>
     )
@@ -62,7 +62,7 @@ export default function ResetPasswordPage() {
 
   if (!validSession) {
     return (
-      <div className="min-h-screen bg-[#050709] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-6">
         <div className="w-full max-w-sm text-center">
           <Logo />
           <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 mb-5">
@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050709] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <Logo />
 

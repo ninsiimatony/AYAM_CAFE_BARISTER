@@ -26,7 +26,7 @@ const STARS = (r: string) => '★'.repeat(parseInt(r)) + '☆'.repeat(5 - parseI
 export default function JournalFeed({ entries }: Props) {
   if (!entries.length) {
     return (
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 flex flex-col items-center justify-center py-16 text-gray-500">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] flex flex-col items-center justify-center py-16 text-gray-500">
         <div className="text-4xl mb-3">📓</div>
         <p className="text-sm">No journal entries yet</p>
         <p className="text-xs mt-1">Start documenting your trades to improve consistency</p>
@@ -44,7 +44,7 @@ export default function JournalFeed({ entries }: Props) {
 
         return (
           <Link key={entry.id} href={`/dashboard/journal/${entry.id}`} className="block group">
-            <div className="rounded-2xl bg-gray-900 border border-gray-800 hover:border-blue-600/50 transition-all p-5 space-y-3">
+            <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] hover:border-blue-600/50 transition-all p-5 space-y-3">
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export default function JournalFeed({ entries }: Props) {
               )}
 
               {/* Footer */}
-              <div className="flex items-center justify-between pt-1 border-t border-gray-800">
+              <div className="flex items-center justify-between pt-1 border-t border-white/[0.07]">
                 <span className="text-[10px] text-gray-500">
                   {entry.created_at ? new Date(entry.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ''}
                 </span>

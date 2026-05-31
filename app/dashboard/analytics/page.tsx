@@ -94,7 +94,7 @@ export default async function AnalyticsPage() {
       {/* KPI cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
         {kpis.map((k) => (
-          <div key={k.label} className="rounded-xl bg-gray-900 border border-gray-800 p-4">
+          <div key={k.label} className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-4">
             <div className="flex items-center gap-1.5 mb-2">
               <span className="text-base">{k.icon}</span>
               <span className="text-[11px] text-gray-400">{k.label}</span>
@@ -106,7 +106,7 @@ export default async function AnalyticsPage() {
 
       {/* Equity curve — Pro+ */}
       <UpgradeGate requiredTier="pro" currentTier={tier} featureName="Equity Curve & Full Analytics">
-        <div className="rounded-2xl bg-gray-900 border border-gray-800 p-6">
+        <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] p-6">
           <h2 className="text-base font-semibold text-white mb-4">Equity Curve (90 days)</h2>
           {snapshots && snapshots.length > 0 ? (
             <EquityCurve snapshots={snapshots as PerformanceSnapshot[]} />
@@ -119,14 +119,14 @@ export default async function AnalyticsPage() {
       </UpgradeGate>
 
       {/* Signal performance table — all tiers */}
-      <div className="rounded-2xl bg-gray-900 border border-gray-800 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-800">
+      <div className="rounded-2xl bg-[#0d1520] border border-white/[0.07] overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/[0.07]">
           <h2 className="text-base font-semibold text-white">Signal Performance by Pair</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-800 bg-gray-800/50">
+              <tr className="border-b border-white/[0.07] bg-[#111d2e]/50">
                 <th className="py-3 px-4 text-left text-xs font-medium text-gray-400">Pair</th>
                 <th className="py-3 px-4 text-right text-xs font-medium text-gray-400">Signals</th>
                 <th className="py-3 px-4 text-right text-xs font-medium text-gray-400">Win Rate</th>
@@ -145,7 +145,7 @@ export default async function AnalyticsPage() {
               ) : signalPerf.map((p) => {
                 const wr = Number(p.win_rate_pct ?? 0)
                 return (
-                  <tr key={p.pair} className="hover:bg-gray-800/40 transition-colors">
+                  <tr key={p.pair} className="hover:bg-white/[0.04] transition-colors">
                     <td className="py-3 px-4 font-semibold text-white">{p.pair}</td>
                     <td className="py-3 px-4 text-right text-gray-300">{p.total_signals}</td>
                     <td className="py-3 px-4 text-right">
