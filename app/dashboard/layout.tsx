@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { AuthProvider } from '@/contexts/AuthContext'
 import Navbar from '@/components/Navbar'
@@ -12,8 +13,7 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
-  if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co') {
-    const { redirect } = await import('next/navigation')
+  if (supabaseUrl && supabaseUrl.startsWith('https://')) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) redirect('/login')

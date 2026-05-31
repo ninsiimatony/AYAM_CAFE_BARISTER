@@ -21,8 +21,6 @@ export default function ProfilePage() {
   const [message, setMessage]               = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [pwMessage, setPwMessage]           = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const supabase = createClient()
-
   useEffect(() => {
     if (profile?.full_name) setFullName(profile.full_name)
   }, [profile])
@@ -31,7 +29,7 @@ export default function ProfilePage() {
     e.preventDefault()
     setSaving(true)
     setMessage(null)
-    const { error } = await supabase
+    const { error } = await createClient()
       .from('profiles')
       .update({ full_name: fullName, updated_at: new Date().toISOString() })
       .eq('id', user!.id)
@@ -50,7 +48,7 @@ export default function ProfilePage() {
     if (newPassword.length < 8) { setPwMessage({ type: 'error', text: 'Password must be at least 8 characters' }); return }
     if (newPassword !== confirmPassword) { setPwMessage({ type: 'error', text: 'Passwords do not match' }); return }
     setChangingPassword(true)
-    const { error } = await supabase.auth.updateUser({ password: newPassword })
+    const { error } = await createClient().auth.updateUser({ password: newPassword })
     if (error) {
       setPwMessage({ type: 'error', text: error.message })
     } else {
