@@ -8,6 +8,7 @@ import {
   Activity, SlidersHorizontal, ClipboardList, BarChart3,
   Bell, Monitor, KeyRound,
 } from 'lucide-react'
+import { DEMO_STATS, DEMO_SIGNALS } from '@/lib/demo-data'
 
 export const metadata: Metadata = { title: 'Dashboard — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
@@ -27,18 +28,25 @@ export default async function DashboardPage() {
   const hour        = new Date().getHours()
   const greeting    = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
 
-  const { data: activeSignals } = await supabase
+  const { data: activeSignalsRaw } = await supabase
     .from('signals')
     .select('id, pair, direction, status, tier_required, entry_zone_low, stop_loss, take_profit_1, confluence_score, published_at')
     .eq('status', 'active')
     .order('published_at', { ascending: false })
     .limit(5)
 
-  const { data: stats } = await supabase
+  const { data: statsRaw } = await supabase
     .from('user_stats_30d')
     .select('avg_win_rate, total_trades, avg_profit_factor, total_pips_30d')
     .eq('user_id', user?.id ?? '')
     .maybeSingle()
+
+  const isDemoStats   = !statsRaw
+  const isDemoSignals = !activeSignalsRaw?.length
+  const stats         = statsRaw ?? DEMO_STATS
+  const activeSignals = activeSignalsRaw?.length
+    ? activeSignalsRaw
+    : DEMO_SIGNALS.filter((s) => s.status === 'active').slice(0, 5)
 
   const TIER_CONFIG = {
     free:  { label: 'Free',  color: 'text-gray-400',  bg: 'bg-white/[0.06] border-white/10' },
@@ -48,11 +56,9 @@ export default async function DashboardPage() {
 
   const tierCfg = TIER_CONFIG[tier as keyof typeof TIER_CONFIG]
 
-  const winRate     = stats?.avg_win_rate      ? `${Number(stats.avg_win_rate).toFixed(1)}%`       : null
-  const profitFactor = stats?.avg_profit_factor ? Number(stats.avg_profit_factor).toFixed(2)        : null
-  const netPips     = stats?.total_pips_30d != null
-    ? `${Number(stats.total_pips_30d) > 0 ? '+' : ''}${Number(stats.total_pips_30d).toFixed(1)}`
-    : null
+  const winRate      = `${Number(stats.avg_win_rate).toFixed(1)}%`
+  const profitFactor = Number(stats.avg_profit_factor).toFixed(2)
+  const netPips      = `${Number(stats.total_pips_30d) > 0 ? '+' : ''}${Number(stats.total_pips_30d).toFixed(1)}`
 
   return (
     <div className="space-y-5 max-w-6xl">
@@ -73,10 +79,10 @@ export default async function DashboardPage() {
 
       {/* KPI row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <KpiCard label="Win Rate (30d)"  value={winRate}      suffix={null}  color="text-emerald-400" />
-        <KpiCard label="Total Trades"    value={stats?.total_trades?.toString() ?? '0'} suffix={null} color="text-blue-400" />
-        <KpiCard label="Profit Factor"   value={profitFactor} suffix={null}  color={Number(stats?.avg_profit_factor ?? 0) >= 1.5 ? 'text-emerald-400' : 'text-red-400'} />
-        <KpiCard label="Net Pips (30d)"  value={netPips}      suffix="pips"  color={Number(stats?.total_pips_30d ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400'} />
+        <KpiCard label="Win Rate (30d)"  value={winRate}      suffix={null}  color="text-emerald-400" isDemo={isDemoStats} />
+        <KpiCard label="Total Trades"    value={String(stats.total_trades ?? 0)} suffix={null} color="text-blue-400" isDemo={isDemoStats} />
+        <KpiCard label="Profit Factor"   value={profitFactor} suffix={null}  color={Number(stats.avg_profit_factor ?? 0) >= 1.5 ? 'text-emerald-400' : 'text-red-400'} isDemo={isDemoStats} />
+        <KpiCard label="Net Pips (30d)"  value={netPips}      suffix="pips"  color={Number(stats.total_pips_30d ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400'} isDemo={isDemoStats} />
       </div>
 
       {/* Live signals + Quick actions */}
@@ -94,18 +100,12 @@ export default async function DashboardPage() {
             </Link>
           </div>
           <div className="divide-y divide-white/[0.04]">
-            {!activeSignals?.length ? (
-              <div className="flex flex-col items-center justify-center py-12 gap-2">
-                <Activity className="h-8 w-8 text-gray-800" strokeWidth={1.25} />
-                <p className="text-gray-600 text-sm">No active signals right now</p>
-              </div>
-            ) : activeSignals.map((s) => {
-              const isBuy   = s.direction === 'buy'
+            {activeSignals.map((s) => {
+              const isBuy    = s.direction === 'buy'
               const dirColor = isBuy ? 'text-emerald-400' : 'text-red-400'
               const dirBg    = isBuy ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-red-500/10 border-red-500/20'
-              return (
-                <Link key={s.id} href={`/dashboard/signals/${s.id}`}
-                  className="flex items-center justify-between px-5 py-3 hover:bg-white/[0.02] transition-colors">
+              const inner = (
+                <div className="flex items-center justify-between px-5 py-3 hover:bg-white/[0.02] transition-colors">
                   <div className="flex items-center gap-3">
                     <span className={`rounded px-2 py-0.5 text-[11px] font-bold uppercase border ${dirColor} ${dirBg}`}>
                       {s.direction}
@@ -130,10 +130,13 @@ export default async function DashboardPage() {
                         ? new Date(s.published_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
                         : ''}
                     </span>
-                    <span className="text-gray-700">›</span>
+                    {!isDemoSignals && <span className="text-gray-700">›</span>}
                   </div>
-                </Link>
+                </div>
               )
+              return isDemoSignals
+                ? <div key={s.id}>{inner}</div>
+                : <Link key={s.id} href={`/dashboard/signals/${s.id}`}>{inner}</Link>
             })}
           </div>
         </div>
@@ -182,17 +185,20 @@ export default async function DashboardPage() {
   }
 }
 
-function KpiCard({ label, value, suffix, color }: {
-  label: string
-  value: string | null
-  suffix: string | null
-  color: string
+function KpiCard({ label, value, suffix, color, isDemo }: {
+  label:   string
+  value:   string | null
+  suffix:  string | null
+  color:   string
+  isDemo?: boolean
 }) {
-  const empty = value === null
   return (
     <div className="rounded-xl bg-[#0d1520] border border-white/[0.07] p-4">
-      <p className="text-[10px] font-semibold text-gray-700 uppercase tracking-widest mb-2">{label}</p>
-      {empty ? (
+      <div className="flex items-center justify-between mb-2">
+        <p className="text-[10px] font-semibold text-gray-700 uppercase tracking-widest">{label}</p>
+        {isDemo && <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">Sample</span>}
+      </div>
+      {value === null ? (
         <p className="text-lg font-bold text-gray-800">—</p>
       ) : (
         <p className={`text-xl font-bold tabular-nums ${color}`}>

@@ -6,9 +6,10 @@ import type { Signal, SubscriptionTier } from '@/lib/types'
 import { canAccessSignal, SMC_PATTERN_LABELS, formatRR } from '@/lib/types'
 
 interface Props {
-  signal:   Signal
-  userTier: SubscriptionTier
-  isStaff:  boolean
+  signal:      Signal
+  userTier:    SubscriptionTier
+  isStaff:     boolean
+  isDemoData?: boolean
 }
 
 const STATUS_CONFIG = {
@@ -29,7 +30,7 @@ const TIER_BADGE = {
   elite: { label: '👑 ELITE', color: 'bg-amber-900/60 text-amber-300' },
 }
 
-export default function SignalCard({ signal, userTier, isStaff }: Props) {
+export default function SignalCard({ signal, userTier, isStaff, isDemoData }: Props) {
   const [publishing, setPublishing] = useState(false)
   const hasAccess = canAccessSignal(userTier, signal.tier_required) || isStaff
 
@@ -57,8 +58,12 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
     }
   }
 
+  const CardWrapper = isDemoData
+    ? ({ children }: { children: React.ReactNode }) => <div className="block group">{children}</div>
+    : ({ children }: { children: React.ReactNode }) => <Link href={`/dashboard/signals/${signal.id}`} className="block group">{children}</Link>
+
   return (
-    <Link href={`/dashboard/signals/${signal.id}`} className="block group">
+    <CardWrapper>
       <div className={`
         relative overflow-hidden rounded-2xl border transition-all duration-200
         ${hasAccess
@@ -161,6 +166,6 @@ export default function SignalCard({ signal, userTier, isStaff }: Props) {
           </div>
         </div>
       </div>
-    </Link>
+    </CardWrapper>
   )
 }

@@ -38,7 +38,12 @@ function LoginForm() {
       router.push(redirectTo)
       router.refresh()
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      const msg = err instanceof Error ? err.message : ''
+      if (!msg || msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('networkerror')) {
+        setError('Cannot connect to the server. Check your internet connection and try again.')
+      } else {
+        setError(msg || 'Something went wrong. Please try again.')
+      }
       setLoading(false)
     }
   }

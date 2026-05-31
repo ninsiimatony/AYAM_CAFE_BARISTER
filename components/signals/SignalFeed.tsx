@@ -8,6 +8,7 @@ interface Props {
   initialSignals: Signal[]
   userTier:  SubscriptionTier
   isStaff:   boolean
+  isDemoData?: boolean
 }
 
 const STATUS_FILTERS = [
@@ -26,7 +27,7 @@ const DIRECTION_FILTERS = [
   { value: 'sell', label: 'Sell' },
 ]
 
-export default function SignalFeed({ initialSignals, userTier, isStaff }: Props) {
+export default function SignalFeed({ initialSignals, userTier, isStaff, isDemoData }: Props) {
   const [signals, setSignals]     = useState<Signal[]>(initialSignals)
   const [statusFilter, setStatus] = useState('')
   const [dirFilter, setDir]       = useState('')
@@ -34,6 +35,7 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
   const [loading, setLoading]     = useState(false)
 
   async function loadSignals() {
+    if (isDemoData) return
     setLoading(true)
     try {
       const params = new URLSearchParams()
@@ -53,6 +55,16 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
 
   return (
     <div className="space-y-4">
+      {isDemoData && (
+        <div className="flex items-center gap-3 rounded-xl border border-blue-500/20 bg-blue-500/[0.07] px-4 py-3">
+          <svg className="h-4 w-4 text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-xs text-blue-300">
+            <span className="font-semibold">Sample signals</span> — Connect your Supabase database to publish real signals.
+          </p>
+        </div>
+      )}
       {/* Filters */}
       <div className="flex flex-wrap gap-1.5 items-center">
         {STATUS_FILTERS.map((f) => (
@@ -111,7 +123,7 @@ export default function SignalFeed({ initialSignals, userTier, isStaff }: Props)
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((signal) => (
-            <SignalCard key={signal.id} signal={signal} userTier={userTier} isStaff={isStaff} />
+            <SignalCard key={signal.id} signal={signal} userTier={userTier} isStaff={isStaff} isDemoData={isDemoData} />
           ))}
         </div>
       )}

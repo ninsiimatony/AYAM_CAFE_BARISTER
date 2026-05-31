@@ -3,6 +3,7 @@ import { redirect }     from 'next/navigation'
 import { isRedirectError } from 'next/dist/client/components/redirect'
 import SignalFeed     from '@/components/signals/SignalFeed'
 import type { Metadata } from 'next'
+import { DEMO_SIGNALS, DEMO_PERF } from '@/lib/demo-data'
 
 export const metadata: Metadata = { title: 'Signals — TONY ELITE AI' }
 export const dynamic = 'force-dynamic'
@@ -28,11 +29,15 @@ export default async function SignalsPage() {
     .limit(20)
 
   // Signal performance summary
-  const { data: perf } = await supabase
+  const { data: perfRaw } = await supabase
     .from('signal_performance')
     .select('*')
     .order('total_signals', { ascending: false })
     .limit(5)
+
+  const isDemoData = !signals?.length
+  const displaySignals = isDemoData ? DEMO_SIGNALS : signals!
+  const perf = perfRaw?.length ? perfRaw : DEMO_PERF
 
   return (
     <div className="space-y-6">
@@ -56,25 +61,24 @@ export default async function SignalsPage() {
       </div>
 
       {/* Performance strip */}
-      {perf && perf.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          {perf.map((p) => (
-            <div key={p.pair} className="rounded-xl bg-white/[0.05] border border-white/[0.09] px-4 py-3">
-              <p className="text-xs text-gray-400 mb-1">{p.pair}</p>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-base font-bold text-white">{Number(p.win_rate_pct ?? 0).toFixed(0)}%</span>
-                <span className="text-xs text-gray-500">win rate</span>
-              </div>
-              <p className="text-xs text-gray-500 mt-0.5">{p.total_signals} signals</p>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        {perf.map((p) => (
+          <div key={p.pair} className="rounded-xl bg-white/[0.05] border border-white/[0.09] px-4 py-3">
+            <p className="text-xs text-gray-400 mb-1">{p.pair}</p>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-base font-bold text-white">{Number(p.win_rate_pct ?? 0).toFixed(0)}%</span>
+              <span className="text-xs text-gray-500">win rate</span>
             </div>
-          ))}
-        </div>
-      )}
+            <p className="text-xs text-gray-500 mt-0.5">{p.total_signals} signals</p>
+          </div>
+        ))}
+      </div>
 
       <SignalFeed
-        initialSignals={signals ?? []}
+        initialSignals={displaySignals}
         userTier={tier}
         isStaff={isStaff}
+        isDemoData={isDemoData}
       />
     </div>
   )
