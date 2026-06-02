@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { hasRole } from '@/lib/types'
 import {
   LayoutDashboard, Activity, ClipboardList, BarChart3,
-  SlidersHorizontal, Monitor, Bell, KeyRound, Wallet, Settings,
+  SlidersHorizontal, Monitor, Bell, KeyRound, Wallet, Settings, Film,
 } from 'lucide-react'
 
 interface NavItem {
@@ -19,16 +19,17 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { href: '/dashboard',           label: 'Overview',        description: 'Account summary',     icon: LayoutDashboard },
-  { href: '/dashboard/signals',   label: 'Signals',         description: 'Live SMC signals',    icon: Activity,          badge: 'LIVE' },
-  { href: '/dashboard/journal',   label: 'Trade Journal',   description: 'Log & review trades', icon: ClipboardList },
-  { href: '/dashboard/analytics', label: 'Analytics',       description: 'Performance metrics', icon: BarChart3 },
-  { href: '/dashboard/risk',      label: 'Risk Calculator', description: 'Position sizing',     icon: SlidersHorizontal },
-  { href: '/dashboard/mt5',       label: 'MT5 Accounts',    description: 'Connect your broker', icon: Monitor },
-  { href: '/dashboard/telegram',  label: 'Telegram',        description: 'VIP alert channel',   icon: Bell },
-  { href: '/dashboard/admin',     label: 'Admin Panel',     description: 'Manage platform',     icon: KeyRound, requiredRole: 'admin' },
-  { href: '/dashboard/billing',   label: 'Billing',         description: 'Plan & subscription', icon: Wallet },
-  { href: '/dashboard/profile',   label: 'Profile',         description: 'Account settings',    icon: Settings },
+  { href: '/dashboard',             label: 'Overview',        description: 'Account summary',     icon: LayoutDashboard },
+  { href: '/dashboard/signals',     label: 'Signals',         description: 'Live SMC signals',    icon: Activity,          badge: 'LIVE' },
+  { href: '/dashboard/journal',     label: 'Trade Journal',   description: 'Log & review trades', icon: ClipboardList },
+  { href: '/dashboard/analytics',   label: 'Analytics',       description: 'Performance metrics', icon: BarChart3 },
+  { href: '/dashboard/risk',        label: 'Risk Calculator', description: 'Position sizing',     icon: SlidersHorizontal },
+  { href: '/dashboard/mt5',         label: 'MT5 Accounts',    description: 'Connect your broker', icon: Monitor },
+  { href: '/dashboard/telegram',    label: 'Telegram',        description: 'VIP alert channel',   icon: Bell },
+  { href: '/dashboard/ape-movie',   label: 'Ape Movie',       description: '🦍 To the moon!',     icon: Film,              badge: 'NEW' },
+  { href: '/dashboard/admin',       label: 'Admin Panel',     description: 'Manage platform',     icon: KeyRound, requiredRole: 'admin' },
+  { href: '/dashboard/billing',     label: 'Billing',         description: 'Plan & subscription', icon: Wallet },
+  { href: '/dashboard/profile',     label: 'Profile',         description: 'Account settings',    icon: Settings },
 ]
 
 export default function Sidebar() {
