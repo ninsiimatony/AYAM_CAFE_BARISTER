@@ -34,7 +34,7 @@ export default async function PricingPage({
       {/* Cancelled banner */}
       {params.cancelled && (
         <div className="bg-[#111d2e] border-b border-white/[0.09] px-4 py-3 text-center text-sm text-gray-300">
-          No worries — your plan wasn't changed. Come back when you're ready.
+          No worries — your plan wasn&apos;t changed. Come back when you&apos;re ready.
         </div>
       )}
 

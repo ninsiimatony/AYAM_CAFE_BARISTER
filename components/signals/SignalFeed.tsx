@@ -34,22 +34,17 @@ export default function SignalFeed({ initialSignals, userTier, isStaff, isDemoDa
   const [pairFilter, setPair]     = useState('')
   const [loading, setLoading]     = useState(false)
 
-  async function loadSignals() {
+  useEffect(() => {
     if (isDemoData) return
     setLoading(true)
-    try {
-      const params = new URLSearchParams()
-      if (statusFilter) params.set('status', statusFilter)
-      if (pairFilter)   params.set('pair', pairFilter)
-      const res  = await fetch(`/api/signals?${params}`)
-      const data = await res.json()
-      setSignals(data.signals ?? [])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => { loadSignals() }, [statusFilter, dirFilter, pairFilter])
+    const params = new URLSearchParams()
+    if (statusFilter) params.set('status', statusFilter)
+    if (pairFilter)   params.set('pair', pairFilter)
+    fetch(`/api/signals?${params}`)
+      .then(r => r.json())
+      .then(data => setSignals(data.signals ?? []))
+      .finally(() => setLoading(false))
+  }, [statusFilter, dirFilter, pairFilter, isDemoData])
 
   const filtered = dirFilter ? signals.filter((s) => s.direction === dirFilter) : signals
 

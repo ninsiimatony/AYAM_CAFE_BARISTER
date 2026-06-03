@@ -56,7 +56,7 @@ export default async function BillingPage({
               {params.tier ? `Welcome to ${params.tier.charAt(0).toUpperCase() + params.tier.slice(1)}!` : 'Subscription activated!'}
             </p>
             <p className="text-sm text-green-600 dark:text-green-400">
-              Your account will be updated within seconds. Refresh if you don't see changes.
+              Your account will be updated within seconds. Refresh if you don&apos;t see changes.
             </p>
           </div>
         </div>

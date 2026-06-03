@@ -97,7 +97,7 @@ export default function TelegramConnect({ account, tier }: Props) {
         <div className="space-y-3">
           <div className="rounded-xl bg-white/[0.05] p-4 text-sm text-gray-300 space-y-2">
             <p className="font-medium text-white text-xs uppercase tracking-wider mb-2">How to connect</p>
-            <p className="text-xs text-gray-400">1. Click "Generate Link Token" below</p>
+            <p className="text-xs text-gray-400">1. Click &quot;Generate Link Token&quot; below</p>
             <p className="text-xs text-gray-400">2. Open the Tony AI bot in Telegram</p>
             <p className="text-xs text-gray-400">3. Send the token via /link command</p>
             <p className="text-xs text-gray-400">4. Bot will send you channel invite links</p>
