@@ -26,10 +26,10 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/risk',        label: 'Risk Calculator', description: 'Position sizing',     icon: SlidersHorizontal },
   { href: '/dashboard/mt5',         label: 'MT5 Accounts',    description: 'Connect your broker', icon: Monitor },
   { href: '/dashboard/telegram',    label: 'Telegram',        description: 'VIP alert channel',   icon: Bell },
-  { href: '/dashboard/ape-movie',   label: 'Ape Movie',       description: '🦍 To the moon!',     icon: Film,              badge: 'NEW' },
-  { href: '/dashboard/admin',       label: 'Admin Panel',     description: 'Manage platform',     icon: KeyRound, requiredRole: 'admin' },
-  { href: '/dashboard/billing',     label: 'Billing',         description: 'Plan & subscription', icon: Wallet },
-  { href: '/dashboard/profile',     label: 'Profile',         description: 'Account settings',    icon: Settings },
+  { href: '/dashboard/movies',       label: 'Movies',          description: 'Browse & watch films', icon: Film,              badge: 'NEW' },
+  { href: '/dashboard/admin',        label: 'Admin Panel',     description: 'Manage platform',     icon: KeyRound, requiredRole: 'admin' },
+  { href: '/dashboard/billing',      label: 'Billing',         description: 'Plan & subscription', icon: Wallet },
+  { href: '/dashboard/profile',      label: 'Profile',         description: 'Account settings',    icon: Settings },
 ]
 
 export default function Sidebar() {
