@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cinephile — Movies & Series</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+
+/* ── Layout ── */
+.app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;position:relative;background:#000}
+.scroll-area{flex:1;overflow-y:auto;padding-bottom:80px}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* ── Hero ── */
+.hero{
+  position:relative;min-height:520px;flex-shrink:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,.75) 60%,#000 100%),
+             linear-gradient(135deg,#0d0d0d 0%,#1a0a00 40%,#0d1a0d 100%);
+}
+.hero-glow{
+  position:absolute;inset:0;opacity:.3;pointer-events:none;
+  background:radial-gradient(ellipse at 30% 40%,rgba(255,100,0,.2) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 60%,rgba(0,80,200,.14) 0%,transparent 50%);
+}
+
+/* ── Top bar ── */
+.topbar{position:relative;display:flex;align-items:center;justify-content:space-between;padding:20px 20px 8px}
+.brand{font-size:24px;font-weight:900;font-style:italic;color:#f5c518;letter-spacing:-.02em}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.12);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;transition:background .15s}
+.icon-btn:hover{background:rgba(255,255,255,.2)}
+
+/* ── Hero content ── */
+.hero-content{position:relative;padding:80px 20px 28px}
+.hero-label{font-size:10px;font-weight:700;letter-spacing:.2em;color:#9ca3af;margin-bottom:8px;text-transform:uppercase}
+.hero-title{font-size:46px;font-weight:900;line-height:1;color:#fff;font-family:Georgia,serif;letter-spacing:-.02em}
+.hero-title span{display:block}
+.hero-meta{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:#9ca3af;font-weight:500}
+.hero-meta .dot{color:#374151}
+.hero-btns{display:flex;align-items:center;gap:12px;margin-top:20px}
+.btn-play{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;color:#000;font-size:14px;font-weight:800;
+  padding:12px 32px;border:none;cursor:pointer;border-radius:2px;
+  transition:background .15s;
+}
+.btn-play:hover{background:#e5e7eb}
+.btn-add{
+  width:48px;height:48px;border:1.5px solid rgba(255,255,255,.4);
+  background:transparent;border-radius:2px;cursor:pointer;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;transition:background .15s;
+}
+.btn-add:hover{background:rgba(255,255,255,.1)}
+
+/* ── Sections ── */
+.sections{padding:8px 20px 0}
+section{margin-bottom:24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.section-label{font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.12em}
+.see-all{font-size:11px;color:#4b5563;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:2px;transition:color .15s}
+.see-all:hover{color:#9ca3af}
+
+/* ── Trending row ── */
+.trending-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin:0 -20px;padding:0 20px 6px;scrollbar-width:none}
+.trending-row::-webkit-scrollbar{display:none}
+.trend-card{flex-shrink:0;width:128px;border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.06);transition:filter .15s}
+.trend-card:hover{filter:brightness(1.15)}
+.trend-poster{height:80px;position:relative}
+.trend-tag{position:absolute;top:6px;left:6px;font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;background:rgba(0,0,0,.55);color:#9ca3af;letter-spacing:.08em}
+.trend-rating{position:absolute;bottom:6px;right:6px;font-size:9px;font-weight:700;color:#facc15;display:flex;align-items:center;gap:2px}
+.trend-info{background:#111;padding:6px 8px}
+.trend-title{font-size:11px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trend-year{font-size:10px;color:#374151;margin-top:1px}
+
+/* ── Continue watching ── */
+.cw-list{display:flex;flex-direction:column;gap:8px}
+.cw-item{
+  display:flex;align-items:center;gap:12px;
+  background:#111;border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:12px 14px;cursor:pointer;
+  transition:border-color .15s;
+}
+.cw-item:hover{border-color:rgba(255,255,255,.14)}
+.cw-thumb{width:48px;height:48px;border-radius:8px;flex-shrink:0}
+.cw-meta{flex:1;min-width:0}
+.cw-title{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cw-ep{font-size:11px;color:#4b5563;margin-top:2px}
+.cw-bar-wrap{margin-top:5px;height:2px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
+.cw-bar-fill{height:100%;background:#eab308;border-radius:999px}
+.cw-play{flex-shrink:0;opacity:.35;font-size:16px}
+
+/* ── Originals grid ── */
+.originals-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.orig-card{border-radius:12px;overflow:hidden;cursor:pointer;transition:filter .15s;border:1px solid rgba(255,255,255,.06)}
+.orig-card:hover{filter:brightness(1.15)}
+.orig-poster{height:96px;display:flex;align-items:flex-end;padding:8px}
+.orig-badge{font-size:8px;font-weight:900;color:#facc15;font-style:italic;letter-spacing:.12em}
+.orig-info{background:#111;padding:8px 10px}
+.orig-title{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.orig-year{font-size:10px;color:#374151;margin-top:1px}
+
+/* ── Search tab ── */
+.search-header{padding:24px 20px 12px}
+.search-label{font-size:11px;font-weight:700;color:#4b5563;text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.search-wrap{position:relative}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#4b5563;pointer-events:none}
+.search-input{
+  width:100%;background:#111;border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:12px 14px 12px 38px;
+  font-size:14px;color:#fff;outline:none;transition:border-color .15s;
+}
+.search-input::placeholder{color:#374151}
+.search-input:focus{border-color:rgba(234,179,8,.35)}
+.search-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px}
+.search-card{border-radius:10px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.06);transition:filter .15s}
+.search-card:hover{filter:brightness(1.15)}
+.search-poster{height:80px}
+.search-info{background:#111;padding:7px 10px}
+.search-title{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-year{font-size:10px;color:#374151;margin-top:1px}
+
+/* ── Downloads empty ── */
+.dl-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center}
+.dl-icon{font-size:48px;margin-bottom:14px;opacity:.2}
+.dl-title{font-size:14px;font-weight:600;color:#4b5563}
+.dl-sub{font-size:12px;color:#374151;margin-top:4px}
+
+/* ── Bottom nav ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:10px 0 14px;z-index:20;
+}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:#374151;transition:color .15s;padding:0 12px}
+.nav-btn.active{color:#facc15}
+.nav-btn:hover:not(.active){color:#6b7280}
+.nav-icon{font-size:20px;line-height:1}
+.nav-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+/* ── Modal ── */
+.modal-bg{
+  position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.88);
+  backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;
+}
+.modal-box{width:100%;max-width:380px;border-radius:20px;overflow:hidden;background:#111;border:1px solid rgba(255,255,255,.1)}
+.modal-screen{
+  height:192px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0d0d0d,#1a0a00,#0a001a);
+}
+.modal-play-ring{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:22px}
+.modal-now{font-size:11px;color:#4b5563;margin-top:6px;text-align:center}
+.modal-body{padding:20px}
+.modal-title{font-size:18px;font-weight:900;color:#fff;font-family:Georgia,serif}
+.modal-ep{font-size:12px;color:#6b7280;margin-top:2px}
+.modal-prog-wrap{margin-top:12px;height:4px;background:rgba(255,255,255,.1);border-radius:999px;overflow:hidden}
+.modal-prog-fill{height:100%;width:26%;background:#eab308;border-radius:999px}
+.modal-times{display:flex;justify-content:space-between;font-size:10px;color:#374151;margin-top:4px}
+.btn-close{
+  margin-top:16px;width:100%;padding:10px;border-radius:10px;
+  background:rgba(255,255,255,.06);color:#9ca3af;font-size:13px;font-weight:600;
+  border:none;cursor:pointer;transition:background .15s;
+}
+.btn-close:hover{background:rgba(255,255,255,.1)}
+
+/* ── Inline SVG icons ── */
+svg{display:inline-block;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Scroll area -->
+  <div class="scroll-area" id="scrollArea">
+
+    <!-- ── HOME tab ── -->
+    <div id="tab-home">
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="topbar">
+          <span class="brand">Cinephile</span>
+          <div class="topbar-actions">
+            <button class="icon-btn" onclick="switchTab('search')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </button>
+            <button class="icon-btn">N</button>
+          </div>
+        </div>
+        <div class="hero-content">
+          <p class="hero-label">A Cinephile Original Series</p>
+          <h1 class="hero-title">
+            <span>The</span><span>Last</span><span>Marshal</span>
+          </h1>
+          <div class="hero-meta">
+            <span>2024</span><span class="dot">·</span>
+            <span>18+</span><span class="dot">·</span>
+            <span>4 SEASONS</span>
+          </div>
+          <div class="hero-btns">
+            <button class="btn-play" onclick="openModal()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              PLAY
+            </button>
+            <button class="btn-add">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sections -->
+      <div class="sections">
+
+        <!-- Trending Now -->
+        <section>
+          <div class="section-header">
+            <span class="section-label">Trending Now</span>
+            <button class="see-all">See all ›</button>
+          </div>
+          <div class="trending-row">
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">
+                <span class="trend-tag">SERIES</span>
+                <span class="trend-rating">★ 8.4</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Neon Divide</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#0d2137,#0a3d62)">
+                <span class="trend-tag">FILM</span>
+                <span class="trend-rating">★ 7.9</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Deep Orbit</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#2d0010,#5c0020)">
+                <span class="trend-tag">FILM</span>
+                <span class="trend-rating">★ 8.1</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Crimson Tide II</div><div class="trend-year">2023</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#1a2800,#2d4600)">
+                <span class="trend-tag">SERIES</span>
+                <span class="trend-rating">★ 7.6</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Velocity</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#1a0030,#2d0050)">
+                <span class="trend-tag">FILM</span>
+                <span class="trend-rating">★ 8.7</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Ghost Signal</div><div class="trend-year">2023</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#2d1a00,#4a2c00)">
+                <span class="trend-tag">SERIES</span>
+                <span class="trend-rating">★ 9.1</span>
+              </div>
+              <div class="trend-info"><div class="trend-title">Last Sunrise</div><div class="trend-year">2024</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Continue Watching -->
+        <section>
+          <div class="section-header">
+            <span class="section-label">Continue Watching</span>
+          </div>
+          <div class="cw-list">
+            <div class="cw-item" onclick="openModal()">
+              <div class="cw-thumb" style="background:linear-gradient(135deg,#200a00,#3d1500)"></div>
+              <div class="cw-meta">
+                <div class="cw-title">The Reckoning</div>
+                <div class="cw-ep">S2 E4</div>
+                <div class="cw-bar-wrap"><div class="cw-bar-fill" style="width:68%"></div></div>
+              </div>
+              <div class="cw-play">▶</div>
+            </div>
+            <div class="cw-item" onclick="openModal()">
+              <div class="cw-thumb" style="background:linear-gradient(135deg,#001a2d,#002d4a)"></div>
+              <div class="cw-meta">
+                <div class="cw-title">Parallel Lines</div>
+                <div class="cw-ep">S1 E7</div>
+                <div class="cw-bar-wrap"><div class="cw-bar-fill" style="width:32%"></div></div>
+              </div>
+              <div class="cw-play">▶</div>
+            </div>
+            <div class="cw-item" onclick="openModal()">
+              <div class="cw-thumb" style="background:linear-gradient(135deg,#1a001a,#2d002d)"></div>
+              <div class="cw-meta">
+                <div class="cw-title">Night Protocol</div>
+                <div class="cw-ep">S3 E1</div>
+                <div class="cw-bar-wrap"><div class="cw-bar-fill" style="width:85%"></div></div>
+              </div>
+              <div class="cw-play">▶</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Originals -->
+        <section>
+          <div class="section-header">
+            <span class="section-label">Cinephile Originals</span>
+            <button class="see-all">See all ›</button>
+          </div>
+          <div class="originals-grid">
+            <div class="orig-card" onclick="openModal()">
+              <div class="orig-poster" style="background:linear-gradient(135deg,#0a0a1a,#1a1a3d)"><span class="orig-badge">ORIGINAL</span></div>
+              <div class="orig-info"><div class="orig-title">Steel Horizon</div><div class="orig-year">2024</div></div>
+            </div>
+            <div class="orig-card" onclick="openModal()">
+              <div class="orig-poster" style="background:linear-gradient(135deg,#1a0a00,#3d1a00)"><span class="orig-badge">ORIGINAL</span></div>
+              <div class="orig-info"><div class="orig-title">The Sovereign</div><div class="orig-year">2023</div></div>
+            </div>
+            <div class="orig-card" onclick="openModal()">
+              <div class="orig-poster" style="background:linear-gradient(135deg,#001a1a,#003d3d)"><span class="orig-badge">ORIGINAL</span></div>
+              <div class="orig-info"><div class="orig-title">Echo Chamber</div><div class="orig-year">2024</div></div>
+            </div>
+            <div class="orig-card" onclick="openModal()">
+              <div class="orig-poster" style="background:linear-gradient(135deg,#0d0d0d,#1a1a1a)"><span class="orig-badge">ORIGINAL</span></div>
+              <div class="orig-info"><div class="orig-title">Blackout Season</div><div class="orig-year">2023</div></div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /sections -->
+    </div><!-- /tab-home -->
+
+    <!-- ── NEW tab ── -->
+    <div id="tab-new" style="display:none">
+      <div style="height:20px"></div>
+      <div class="sections">
+        <section>
+          <div class="section-header">
+            <span class="section-label">New Releases</span>
+            <button class="see-all">See all ›</button>
+          </div>
+          <div class="trending-row">
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"><span class="trend-tag">SERIES</span><span class="trend-rating">★ 8.4</span></div>
+              <div class="trend-info"><div class="trend-title">Neon Divide</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#0d2137,#0a3d62)"><span class="trend-tag">FILM</span><span class="trend-rating">★ 7.9</span></div>
+              <div class="trend-info"><div class="trend-title">Deep Orbit</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#2d1a00,#4a2c00)"><span class="trend-tag">SERIES</span><span class="trend-rating">★ 9.1</span></div>
+              <div class="trend-info"><div class="trend-title">Last Sunrise</div><div class="trend-year">2024</div></div>
+            </div>
+            <div class="trend-card" onclick="openModal()">
+              <div class="trend-poster" style="background:linear-gradient(135deg,#1a2800,#2d4600)"><span class="trend-tag">SERIES</span><span class="trend-rating">★ 7.6</span></div>
+              <div class="trend-info"><div class="trend-title">Velocity</div><div class="trend-year">2024</div></div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div class="section-header"><span class="section-label">Cinephile Originals</span></div>
+          <div class="originals-grid">
+            <div class="orig-card" onclick="openModal()"><div class="orig-poster" style="background:linear-gradient(135deg,#0a0a1a,#1a1a3d)"><span class="orig-badge">ORIGINAL</span></div><div class="orig-info"><div class="orig-title">Steel Horizon</div><div class="orig-year">2024</div></div></div>
+            <div class="orig-card" onclick="openModal()"><div class="orig-poster" style="background:linear-gradient(135deg,#001a1a,#003d3d)"><span class="orig-badge">ORIGINAL</span></div><div class="orig-info"><div class="orig-title">Echo Chamber</div><div class="orig-year">2024</div></div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ── SEARCH tab ── -->
+    <div id="tab-search" style="display:none">
+      <div class="search-header">
+        <div class="search-label">Search</div>
+        <div class="search-wrap">
+          <div class="search-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <input class="search-input" id="searchInput" type="text" placeholder="Movies, series, genres…" oninput="filterSearch(this.value)" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="search-grid" id="searchGrid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- ── DOWNLOAD tab ── -->
+    <div id="tab-download" style="display:none">
+      <div class="dl-empty">
+        <div class="dl-icon">⬇</div>
+        <div class="dl-title">No downloads yet</div>
+        <div class="dl-sub">Save movies to watch offline</div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <!-- ── Bottom Nav ── -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="nav-btn" id="nav-new" onclick="switchTab('new')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </span>
+      <span class="nav-label">New</span>
+    </button>
+    <button class="nav-btn" id="nav-search" onclick="switchTab('search')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <span class="nav-label">Search</span>
+    </button>
+    <button class="nav-btn" id="nav-download" onclick="switchTab('download')">
+      <span class="nav-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </span>
+      <span class="nav-label">Download</span>
+    </button>
+  </nav>
+
+  <!-- ── Now Playing Modal ── -->
+  <div class="modal-bg" id="modal" style="display:none" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-screen">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="modal-play-ring">▶</div>
+          <span class="modal-now">Now Playing</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-title">The Last Marshal</div>
+        <div class="modal-ep">S1 E1 · The Beginning</div>
+        <div class="modal-prog-wrap"><div class="modal-prog-fill"></div></div>
+        <div class="modal-times"><span>12:42</span><span>48:00</span></div>
+        <button class="btn-close" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ALL_MOVIES = [
+  {title:'Neon Divide',   year:2024, bg:'linear-gradient(135deg,#1a1a2e,#16213e)'},
+  {title:'Deep Orbit',    year:2024, bg:'linear-gradient(135deg,#0d2137,#0a3d62)'},
+  {title:'Crimson Tide II',year:2023,bg:'linear-gradient(135deg,#2d0010,#5c0020)'},
+  {title:'Velocity',      year:2024, bg:'linear-gradient(135deg,#1a2800,#2d4600)'},
+  {title:'Ghost Signal',  year:2023, bg:'linear-gradient(135deg,#1a0030,#2d0050)'},
+  {title:'Last Sunrise',  year:2024, bg:'linear-gradient(135deg,#2d1a00,#4a2c00)'},
+  {title:'Steel Horizon', year:2024, bg:'linear-gradient(135deg,#0a0a1a,#1a1a3d)'},
+  {title:'The Sovereign', year:2023, bg:'linear-gradient(135deg,#1a0a00,#3d1a00)'},
+  {title:'Echo Chamber',  year:2024, bg:'linear-gradient(135deg,#001a1a,#003d3d)'},
+  {title:'Blackout Season',year:2023,bg:'linear-gradient(135deg,#0d0d0d,#1a1a1a)'},
+]
+
+let currentTab = 'home'
+
+function switchTab(id) {
+  // hide all
+  ['home','new','search','download'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none'
+    document.getElementById('nav-'+t).classList.remove('active')
+  })
+  document.getElementById('tab-'+id).style.display = 'block'
+  document.getElementById('nav-'+id).classList.add('active')
+  document.getElementById('scrollArea').scrollTop = 0
+  currentTab = id
+  if (id === 'search') {
+    filterSearch('')
+    setTimeout(() => document.getElementById('searchInput').focus(), 50)
+  }
+}
+
+function filterSearch(q) {
+  const grid = document.getElementById('searchGrid')
+  const filtered = ALL_MOVIES.filter(m => !q || m.title.toLowerCase().includes(q.toLowerCase()))
+  grid.innerHTML = filtered.map(m => `
+    <div class="search-card" onclick="openModal()">
+      <div class="search-poster" style="background:${m.bg}"></div>
+      <div class="search-info">
+        <div class="search-title">${m.title}</div>
+        <div class="search-year">${m.year}</div>
+      </div>
+    </div>
+  `).join('')
+}
+
+function openModal()  { document.getElementById('modal').style.display = 'flex' }
+function closeModal() { document.getElementById('modal').style.display = 'none' }
+</script>
+</body>
+</html>
